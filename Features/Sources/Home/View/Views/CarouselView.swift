@@ -30,7 +30,6 @@ struct CarouselView: View {
                 }
                 .padding(.horizontal, SpaceDesignConstant.normal)
             }
-            .frame(maxWidth: .infinity)
         }
     }
 
