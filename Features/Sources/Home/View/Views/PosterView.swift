@@ -9,29 +9,30 @@ import DesignSystem
 import SwiftUI
 
 struct PosterView: View {
-
+    
     private let content: ContentUI
-
+    
     init(content: ContentUI) {
         self.content = content
     }
-
+    
     var body: some View {
         AsyncImage(
             url: content.portraitPosterURL,
             content: { image in
                 image
                     .resizable()
-                    .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
+                    .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
             },
             placeholder: {
                 Text("Loading")
+                    .background(Color.red)
             })
         .overlay { infoContainer }
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .padding(.horizontal, 32)
     }
-
+    
     private var infoContainer: some View {
         VStack {
             Spacer()
@@ -53,7 +54,7 @@ struct PosterView: View {
             )
         }
     }
-
+    
     private var title: some View {
         Text(content.title.uppercased())
             .font(.title)
@@ -61,7 +62,7 @@ struct PosterView: View {
             .multilineTextAlignment(.center)
             .foregroundColor(.white)
     }
-
+    
     private var categories: some View {
         Text(content.genresJoined)
             .font(.subheadline)
@@ -69,14 +70,14 @@ struct PosterView: View {
             .multilineTextAlignment(.center)
             .foregroundColor(.white)
     }
-
+    
     private var buttons: some View {
         HStack(spacing: 16) {
             Button(action: {}) {
                 HStack(spacing: 8) {
                     Image(systemName: "play.fill")
                         .foregroundColor(.black)
-
+                    
                     Text("Assistir")
                         .font(.body)
                         .fontWeight(.semibold)
@@ -85,12 +86,12 @@ struct PosterView: View {
                 .frame(maxWidth: .infinity)
             }
             .buttonStyle(NFButtonStyle(backgroundColor: .white))
-
+            
             Button(action: {}) {
                 HStack(spacing: 8) {
                     Image(systemName: "plus")
                         .foregroundColor(.white)
-
+                    
                     Text("Minha lista")
                         .font(.body)
                         .fontWeight(.semibold)
@@ -117,7 +118,7 @@ struct PosterView_Previews: PreviewProvider {
                 .init(name: "Fantasia")
             ],
             portraitPosterURL: URL(
-                string: "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/ij8sapIEbLf2g8npOu6XgsQS2w0.jpg"
+                string: "https://www.themoviaedb.org/t/p/w300_and_h450_bestv2/ij8sapIEbLf2g8npOu6XgsQS2w0.jpg"
             )!
         ))
     }

@@ -17,9 +17,9 @@ public struct HomeView: View {
     }
 
     public var body: some View {
-        stateView
+        content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(background)
+            .background(Color.purple)
             .onAppear(perform: viewModel.fetchData)
     }
 
@@ -34,7 +34,7 @@ public struct HomeView: View {
     private var stateView: some View {
         Group {
             switch viewModel.state {
-            case .content:
+            case .content, .loading:
                 content
             case .loading:
                 LoadingView()
@@ -47,10 +47,16 @@ public struct HomeView: View {
     // MARK: Content
 
     private var content: some View {
-        ScrollView(.vertical, showsIndicators: false) {
+        List {
             contentHeader
-            carouselsList
+                .listRowBackground(Color.green)
+            ForEach(viewModel.carousels, id: \.title) {
+                CarouselView(carousel: $0)
+            }
+            .listRowBackground(Color.red)
         }
+        .background(Color.yellow)
+        .scrollContentBackground(.hidden)
     }
 
     @ViewBuilder private var contentHeader: some View {
@@ -59,23 +65,19 @@ public struct HomeView: View {
                 .shadow(radius: RadiusDesignConstant.hard)
         }
     }
-
-    private var carouselsList: some View {
-        VStack(alignment: .leading, spacing: VDesignConstant.normal) {
-            ForEach(viewModel.carousels, id: \.title) { carousel in
-                CarouselView(carousel: carousel)
-            }
-        }
-        .padding(.top, VDesignConstant.normal)
-    }
 }
 
 #if DEBUG
 import Preview
 
 struct HomeView_Previews: PreviewProvider {
+
     static var previews: some View {
-        HomeView(
+        UITableView.appearance().separatorStyle = .none
+        UITableViewCell.appearance().backgroundColor = .clear
+        UITableView.appearance().backgroundColor = .clear
+
+        return HomeView(
             viewModel: HomeViewModel(
                 carouselsService: Preview.CarouselsServicesMock()
             )

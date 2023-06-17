@@ -5,6 +5,7 @@
 //  Created by Breno Aquino on 22/03/23.
 //
 
+import DesignSystem
 import SwiftUI
 
 struct CarouselView: View {
@@ -16,33 +17,46 @@ struct CarouselView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: SpaceDesignConstant.smallM) {
             Text(carousel.title)
                 .font(.title3)
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
-                .padding(.horizontal, 24)
+                .padding(.horizontal, SpaceDesignConstant.normal)
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(carousel.contents, id: \.title) { content in
-                        AsyncImage(
-                            url: content.portraitPosterURL,
-                            content: { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
-                                    .frame(height: 240)
-                            },
-                            placeholder: {
-                                Text("Loading")
-                            })
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                    }
+                LazyHStack(spacing: SpaceDesignConstant.smallM) {
+                    ForEach(carousel.contents, id: \.title, content: poster)
                 }
-                .padding(.horizontal, 24)
+                .padding(.horizontal, SpaceDesignConstant.normal)
             }
+            .frame(maxWidth: .infinity)
         }
+    }
+
+    private func poster(_ content: ContentUI) -> some View {
+        AsyncImage(
+            url: content.portraitPosterURL,
+            content: { image in
+                image.resizable()
+            },
+            placeholder: {
+                placeholder(content.title)
+            })
+        .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
+        .frame(width: 180)
+        .clipShape(RoundedRectangle(cornerRadius: RadiusDesignConstant.normal))
+    }
+
+    private func placeholder(_ title: String) -> some View {
+        VStack(spacing: SpaceDesignConstant.smallL) {
+            ProgressView()
+            Text(title)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, SpaceDesignConstant.smallM)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.gray)
     }
 }
 
@@ -63,6 +77,7 @@ struct CarouselView_Previews: PreviewProvider {
                 .init(movie: Domain.Movie.marioBros)
             ]
         ))
+        .previewLayout(.sizeThatFits)
     }
 }
 #endif
