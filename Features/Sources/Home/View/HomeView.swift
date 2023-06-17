@@ -5,6 +5,7 @@
 //  Created by Breno Aquino on 22/03/23.
 //
 
+import Common
 import DesignSystem
 import SwiftUI
 
@@ -34,7 +35,7 @@ public struct HomeView: View {
     private var stateView: some View {
         Group {
             switch viewModel.state {
-            case .content, .loading:
+            case .content:
                 content
             case .loading:
                 LoadingView()
@@ -49,14 +50,23 @@ public struct HomeView: View {
     private var content: some View {
         List {
             contentHeader
-                .listRowBackground(Color.green)
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets())
+                .listRowBackground(Color.clear)
+                .padding(.bottom, SpaceDesignConstant.normal)
+
             ForEach(viewModel.carousels, id: \.title) {
                 CarouselView(carousel: $0)
+                    .padding(.bottom, SpaceDesignConstant.normal)
             }
-            .listRowBackground(Color.red)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
         }
-        .background(Color.yellow)
-        .scrollContentBackground(.hidden)
+        .listStyle(.plain)
+        .ignoresSafeArea(.all)
+        .listRowInsets(EdgeInsets())
+        .listBackgroundColor(Color.clear)
     }
 
     @ViewBuilder private var contentHeader: some View {
