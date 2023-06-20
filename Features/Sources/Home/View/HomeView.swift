@@ -21,7 +21,9 @@ public struct HomeView: View {
         content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.purple)
-            .onAppear(perform: viewModel.fetchData)
+            .task {
+                await viewModel.fetchData()
+            }
     }
 
     private var background: some View {

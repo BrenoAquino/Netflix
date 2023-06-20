@@ -38,28 +38,26 @@ public class HomeViewModel: ObservableObject {
 
 extension HomeViewModel {
 
-    func fetchData() {
-        Task { [self] in
-            do {
-                let topRatedMovie = ContentUI(movie: try await carouselsService.topRatedMovie())
-                async let carouselTopRated = try? carouselsService.topRated().map { ContentUI(movie: $0) }
-                async let carouselUpcoming = try? carouselsService.upcoming().map { ContentUI(movie: $0) }
-                async let carouselPopular = try? carouselsService.popular().map { ContentUI(movie: $0) }
+    func fetchData() async {
+        do {
+            let topRatedMovie = ContentUI(movie: try await carouselsService.topRatedMovie())
+            async let carouselTopRated = try? carouselsService.topRated().map { ContentUI(movie: $0) }
+            async let carouselUpcoming = try? carouselsService.upcoming().map { ContentUI(movie: $0) }
+            async let carouselPopular = try? carouselsService.popular().map { ContentUI(movie: $0) }
 
-                let homeCarousels = await [
-                    ("Top Rated", carouselTopRated),
-                    ("Upcoming", carouselUpcoming),
-                    ("Popular", carouselPopular),
-                ].compactMap { CarouselUI(title: $0.0, contents: $0.1) }
+            let homeCarousels = await [
+                ("Top Rated", carouselTopRated),
+                ("Upcoming", carouselUpcoming),
+                ("Popular", carouselPopular),
+            ].compactMap { CarouselUI(title: $0.0, contents: $0.1) }
 
-                await MainActor.run { [self] in
-                    mainContent = topRatedMovie
-                    carousels = homeCarousels
-                    state = .content
-                }
-            } catch {
-                Logger.log(error.localizedDescription)
+            await MainActor.run { [self] in
+                mainContent = topRatedMovie
+                carousels = homeCarousels
+                state = .content
             }
+        } catch {
+            Logger.log(error.localizedDescription)
         }
     }
 }

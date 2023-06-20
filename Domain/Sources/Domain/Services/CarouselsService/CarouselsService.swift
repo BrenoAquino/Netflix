@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CarouselsServiceError: Error {
+public enum CarouselsServiceError: Error {
     /// Missing a top rated movie
     case emptyTopRated
 }

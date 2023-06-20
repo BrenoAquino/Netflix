@@ -11,26 +11,35 @@ import SwiftUI
 struct NetflixApp: App {
 
     init() {
-            setupTableViewAppearance()
-            setupScrollViewAppearance()
-            setupNavigationBarAppearance()
-        }
+        setupURLCacheSize()
+        setupTableViewAppearance()
+        setupScrollViewAppearance()
+        setupNavigationBarAppearance()
+    }
 
-        // MARK: Setups
-        func setupTableViewAppearance() {
-            UITableView.appearance().backgroundColor = .clear
-            UITableViewCell.appearance().backgroundColor = .clear
-        }
+    // MARK: Setups
 
-        func setupScrollViewAppearance() {
-            UIScrollView.appearance().showsVerticalScrollIndicator = false
-            UIScrollView.appearance().showsHorizontalScrollIndicator = false
-            UIScrollView.appearance().keyboardDismissMode = .onDrag
-        }
+    func setupURLCacheSize() {
+        let memoryCapacity = 500 * 1024 * 1024
+        let diskCapacity = 10 * 1024 * 1024 * 1024
+        let cache = URLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity)
+        URLCache.shared = cache
+    }
 
-        func setupNavigationBarAppearance() {
-            UINavigationBar.appearance().tintColor = .white
-        }
+    func setupTableViewAppearance() {
+        UITableView.appearance().backgroundColor = .clear
+        UITableViewCell.appearance().backgroundColor = .clear
+    }
+
+    func setupScrollViewAppearance() {
+        UIScrollView.appearance().showsVerticalScrollIndicator = false
+        UIScrollView.appearance().showsHorizontalScrollIndicator = false
+        UIScrollView.appearance().keyboardDismissMode = .onDrag
+    }
+
+    func setupNavigationBarAppearance() {
+        UINavigationBar.appearance().tintColor = .white
+    }
 
     var body: some Scene {
         WindowGroup {
