@@ -43,7 +43,7 @@ struct CarouselView: View {
                 placeholder(content.title)
             })
         .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
-        .frame(width: 180)
+        .frame(width: DesignConstants.Carousel.posterWidth)
         .clipShape(RoundedRectangle(cornerRadius: RadiusDesignConstant.normal))
     }
 
