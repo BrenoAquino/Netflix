@@ -10,9 +10,11 @@ import Foundation
 
 class MovieDetailUI {
 
-    /// Content title
+    /// Movie ID
+    let id: Int
+    /// Title
     let title: String
-    /// Content categories
+    /// Categories
     let genres: [GenreUI]
     /// Portrait poster
     let posterURL: URL
@@ -26,7 +28,8 @@ class MovieDetailUI {
         genres.map { $0.name }.joined(separator: " • ")
     }
 
-    init(title: String, genres: [GenreUI], posterURL: URL, backdropURL: URL, logoURL: URL) {
+    init(id: Int, title: String, genres: [GenreUI], posterURL: URL, backdropURL: URL, logoURL: URL) {
+        self.id = id
         self.title = title
         self.genres = genres
         self.posterURL = posterURL
@@ -35,6 +38,7 @@ class MovieDetailUI {
     }
 
     init(movie: Domain.MovieDetail) {
+        id = movie.id
         title = movie.title
         genres = movie.genres.map { GenreUI(genre: $0) }
         posterURL = movie.images.posters.first!.image
@@ -42,6 +46,8 @@ class MovieDetailUI {
         logoURL = movie.images.logos.highestAspect()!.image
     }
 }
+
+extension MovieDetailUI: Identifiable {}
 
 private extension Array where Element == Image {
 

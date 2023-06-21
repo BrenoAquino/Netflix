@@ -51,19 +51,15 @@ public struct HomeView: View {
 
     private var content: some View {
         List {
-            contentHeader
+            highlighters
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
-                .padding(.bottom, SpaceDesignConstant.normal)
 
-            ForEach(viewModel.carousels, id: \.title) {
-                CarouselView(carousel: $0)
-                    .padding(.bottom, SpaceDesignConstant.normal)
-            }
-            .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets())
-            .listRowBackground(Color.clear)
+            carousels
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets())
+                .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
         .ignoresSafeArea(.all)
@@ -71,10 +67,14 @@ public struct HomeView: View {
         .listBackgroundColor(Color.clear)
     }
 
-    @ViewBuilder private var contentHeader: some View {
-        if let mainContent = viewModel.mainContent {
-            PosterView(movieDetail: mainContent)
-                .shadow(radius: RadiusDesignConstant.hard)
+    private var highlighters: some View {
+        HighlightersCarouselView(movies: viewModel.highlighters)
+    }
+
+    private var carousels: some View {
+        ForEach(viewModel.carousels, id: \.title) {
+            CarouselView(carousel: $0)
+                .padding(.bottom, SpaceDesignConstant.normal)
         }
     }
 }

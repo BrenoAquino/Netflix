@@ -30,10 +30,10 @@ private extension Domain.MovieDetail {
 }
 
 extension Domain.MovieDetail {
-    public static let marioBros: MovieDetail = .init(
-        id: 1,
-        title: "Super Mario Bros.: The Film \(arc4random() % 100)",
-        poster: URL(string: "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/ij8sapIEbLf2g8npOu6XgsQS2w0.jpg")!,
+    public static var marioBros: MovieDetail { .init(
+        id: Int(arc4random() % 10000),
+        title: "Super Mario Bros.: The Film",
+        poster: URL(string: "https://image.tmdb.org/t/p/original/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg")!,
         voteAverage: 3.4,
         genres: [.animation, .adventure, .family, .fantasy],
         images: .init(
@@ -56,6 +56,34 @@ extension Domain.MovieDetail {
                 )
             ]
         )
-    )
+    ) }
+
+    public static var spiderMan: MovieDetail { .init(
+        id: 569094,
+        title: "Spider-Man: Across the Spider-Verse",
+        poster: URL(string: "https://image.tmdb.org/t/p/original/xxPXsL8V95dTwL5vHWIIQALkJQS.jpg")!,
+        voteAverage: 3.4,
+        genres: [.animation, .adventure, .family, .fantasy],
+        images: .init(
+            logos: [
+                .init(
+                    aspectRation: 0.66,
+                    image: URL(string: "https://image.tmdb.org/t/p/original/cmE0j3mQQe6xrzLryxGF9rF2KC8.png")!
+                )
+            ],
+            posters: [
+                .init(
+                    aspectRation: 0.66,
+                    image: URL(string: "https://image.tmdb.org/t/p/original/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg")!
+                )
+            ],
+            backdrops: [
+                .init(
+                    aspectRation: 0.66,
+                    image: URL(string: "https://image.tmdb.org/t/p/original/nGxUxi3PfXDRm7Vg95VBNgNM8yc.jpg")!
+                )
+            ]
+        )
+    ) }
 }
 #endif

@@ -10,6 +10,8 @@ import Foundation
 
 class MovieUI {
 
+    /// ID
+    let id: Int
     /// Content title
     let title: String
     /// Content categories
@@ -22,21 +24,19 @@ class MovieUI {
         genres.map { $0.name }.joined(separator: " • ")
     }
 
-    init(title: String, genres: [GenreUI], portraitPosterURL: URL) {
+    init(id: Int, title: String, genres: [GenreUI], portraitPosterURL: URL) {
+        self.id = id
         self.title = title
         self.genres = genres
         self.portraitPosterURL = portraitPosterURL
     }
 
     init(movie: Domain.Movie) {
-        title = movie.title
-        genres = movie.genres.map { GenreUI(genre: $0) }
-        portraitPosterURL = movie.poster
-    }
-
-    init(movie: Domain.MovieDetail) {
+        id = movie.id
         title = movie.title
         genres = movie.genres.map { GenreUI(genre: $0) }
         portraitPosterURL = movie.poster
     }
 }
+
+extension Movie: Identifiable {}

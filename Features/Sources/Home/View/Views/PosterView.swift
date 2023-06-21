@@ -117,6 +117,7 @@ struct PosterView: View {
 struct PosterView_Previews: PreviewProvider {
     static var previews: some View {
         PosterView(movieDetail: .init(
+            id: 123,
             title: "Super Mario Bros.: The Film",
             genres: [
                 .init(name: "adventure"),

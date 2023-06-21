@@ -11,6 +11,6 @@ enum DesignConstants {
 
     enum Carousel {
 
-        static let posterWidth: CGFloat = 100
+        static let posterWidth: CGFloat = 150
     }
 }

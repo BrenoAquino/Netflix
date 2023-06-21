@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  GenreUI.swift
 //  
 //
 //  Created by Breno Aquino on 22/03/23.
@@ -20,4 +20,8 @@ class GenreUI {
     init(genre: Genre) {
         name = genre.title
     }
+}
+
+extension GenreUI: Identifiable {
+    var id: String { name }
 }

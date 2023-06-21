@@ -20,3 +20,7 @@ class CarouselUI {
         self.movies = movies
     }
 }
+
+extension CarouselUI: Identifiable {
+    var id: String { title }
+}
