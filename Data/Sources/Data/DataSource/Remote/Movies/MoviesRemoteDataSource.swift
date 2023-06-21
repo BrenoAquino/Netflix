@@ -16,4 +16,6 @@ public protocol MoviesRemoteDataSource {
     func popular(page: Int) async throws -> Pagination<[Movie]>
     /// Retrieve all images related to a specific movie
     func images(movieID: Int) async throws -> Images
+    /// Retrieve all metadata related to a specific movie
+    func detail(movieID: Int) async throws -> MovieDetail
 }

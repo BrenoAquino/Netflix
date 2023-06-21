@@ -7,14 +7,9 @@
 
 import Foundation
 
-public enum CarouselsServiceError: Error {
-    /// Missing a top rated movie
-    case emptyTopRated
-}
-
 public protocol CarouselsService {
-    /// Get top rated movie
-    func topRatedMovie() async throws -> MovieDetail
+    /// Get highlighted movie
+    func highlighted() async throws -> [MovieDetail]
     /// Get top rated movies
     func topRated() async throws -> [Movie]
     /// Get upcoming movies

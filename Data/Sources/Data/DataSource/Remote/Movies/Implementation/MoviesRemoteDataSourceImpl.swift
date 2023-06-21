@@ -39,4 +39,9 @@ extension MoviesRemoteDataSourceImpl: MoviesRemoteDataSource {
         let api = MoviesAPIs.images(domain, movieID: movieID)
         return try await provider.execute(endpoint: api, keyPath: nil)
     }
+
+    public func detail(movieID: Int) async throws -> MovieDetail {
+        let api = MoviesAPIs.detail(domain, movieID: movieID)
+        return try await provider.execute(endpoint: api, keyPath: nil)
+    }
 }

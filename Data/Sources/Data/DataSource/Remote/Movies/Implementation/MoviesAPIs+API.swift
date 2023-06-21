@@ -10,7 +10,11 @@ import Foundation
 extension MoviesAPIs: API {
     var domain: DomainConfig {
         switch self {
-        case .upcoming(let config, _), .popular(let config, _), .topRated(let config, _), .images(let config, _):
+        case .upcoming(let config, _),
+             .popular(let config, _),
+             .topRated(let config, _),
+             .images(let config, _),
+             .detail(let config, _):
             return config
         }
     }
@@ -25,12 +29,14 @@ extension MoviesAPIs: API {
             return "movie/popular"
         case .images(_, let movieID):
             return "movie/\(movieID)/images"
+        case .detail(_, let movieID):
+            return "movie/\(movieID)"
         }
     }
 
     var method: RequestMethod {
         switch self {
-        case .upcoming, .popular, .topRated, .images:
+        case .upcoming, .popular, .topRated, .images, .detail:
             return .get
         }
     }
@@ -39,7 +45,7 @@ extension MoviesAPIs: API {
         switch self {
         case .upcoming(_, let page), .popular(_, let page), .topRated(_, let page):
             return ["page": page]
-        case .images:
+        case .images, .detail:
             return nil
         }
     }

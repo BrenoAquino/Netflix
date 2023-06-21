@@ -8,6 +8,10 @@
 import Foundation
 import Domain
 
+enum MoviesRepositoryImplError: Error {
+    case unableToConvert(origin: String)
+}
+
 public class MoviesRepositoryImpl {
 
     private let moviesRemoteDataSource: MoviesRemoteDataSource
@@ -41,5 +45,14 @@ extension MoviesRepositoryImpl: Domain.MoviesRepository {
     public func images(movieID: Int) async throws -> Domain.Images {
         let images = try await moviesRemoteDataSource.images(movieID: movieID)
         return images.convertToDomain(imageDomain)
+    }
+
+    public func detail(movieID: Int) async throws -> Domain.MovieDetail {
+        let detail = try await moviesRemoteDataSource.detail(movieID: movieID)
+        guard let detailDomain = detail.convertToDomain(imageDomain) else {
+            let originDescription = String(describing: detail)
+            throw MoviesRepositoryImplError.unableToConvert(origin: originDescription)
+        }
+        return detailDomain
     }
 }

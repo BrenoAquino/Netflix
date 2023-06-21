@@ -24,7 +24,7 @@ public class HomeViewModel: ObservableObject {
     // MARK: Publishers
 
     @Published var state: HomeState = .loading
-    @Published var mainContent: MovieDetailUI? = nil
+    @Published var highlighters: [MovieDetailUI] = []
     @Published var carousels: [CarouselUI] = []
 
     // MARK: Inits
@@ -39,25 +39,21 @@ public class HomeViewModel: ObservableObject {
 extension HomeViewModel {
 
     func fetchData() async {
-        do {
-            let topRatedMovie = MovieDetailUI(movie: try await carouselsService.topRatedMovie())
-            async let carouselTopRated = try? carouselsService.topRated().compactMap { MovieUI(movie: $0) }
-            async let carouselUpcoming = try? carouselsService.upcoming().compactMap { MovieUI(movie: $0) }
-            async let carouselPopular = try? carouselsService.popular().compactMap { MovieUI(movie: $0) }
+        let carouselHighlighters = try? await carouselsService.highlighted().compactMap { MovieDetailUI(movie: $0) }
+        async let carouselTopRated = try? carouselsService.topRated().compactMap { MovieUI(movie: $0) }
+        async let carouselUpcoming = try? carouselsService.upcoming().compactMap { MovieUI(movie: $0) }
+        async let carouselPopular = try? carouselsService.popular().compactMap { MovieUI(movie: $0) }
 
-            let homeCarousels = await [
-                ("Top Rated", carouselTopRated),
-                ("Upcoming", carouselUpcoming),
-                ("Popular", carouselPopular),
-            ].compactMap { CarouselUI(title: $0.0, movies: $0.1) }
+        let homeCarousels = await [
+            ("Top Rated", carouselTopRated),
+            ("Upcoming", carouselUpcoming),
+            ("Popular", carouselPopular),
+        ].compactMap { CarouselUI(title: $0.0, movies: $0.1) }
 
-            await MainActor.run { [self] in
-                mainContent = topRatedMovie
-                carousels = homeCarousels
-                state = .content
-            }
-        } catch {
-            Logger.log(error.localizedDescription)
+        await MainActor.run { [self] in
+            highlighters = carouselHighlighters ?? []
+            carousels = homeCarousels
+            state = .content
         }
     }
 }

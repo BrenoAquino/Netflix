@@ -5,7 +5,6 @@
 //  Created by Breno Aquino on 20/06/23.
 //
 
-import Domain
 import Foundation
 
 public struct Image: Decodable {
@@ -34,27 +33,4 @@ public struct Images: Decodable {
     let logos: [Image]?
     let posters: [Image]?
     let backdrops: [Image]?
-}
-
-// MARK: Converter
-
-extension Image {
-    func convertToDomain(_ imageDomain: ImageDomainConfig? = nil) -> Domain.Image? {
-        guard
-            let aspectRation,
-            let image = URL(imagePath: imagePath, imageDomain: imageDomain)
-        else {
-            return nil
-        }
-        return Domain.Image(aspectRation: aspectRation, image: image)
-    }
-}
-
-extension Images {
-    func convertToDomain(_ imageDomain: ImageDomainConfig? = nil) -> Domain.Images {
-        let logos = logos?.compactMap { $0.convertToDomain(imageDomain) } ?? []
-        let posters = posters?.compactMap { $0.convertToDomain(imageDomain) } ?? []
-        let backdrops = backdrops?.compactMap { $0.convertToDomain(imageDomain) } ?? []
-        return Domain.Images(logos: logos, posters: posters, backdrops: backdrops)
-    }
 }

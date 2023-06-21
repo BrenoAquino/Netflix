@@ -14,13 +14,17 @@ private extension Domain.MovieDetail {
         id: Int,
         title: String,
         poster: URL,
-        genresIDs: [Int],
         voteAverage: Double,
         genres: [Genre],
         images: Images
     ) {
-        self.init(id: id, title: title, poster: poster, genresIDs: genres.map { $0.id }, voteAverage: voteAverage)
-        self.genres = genres
+        self.init(
+            id: id,
+            title: title,
+            poster: poster,
+            voteAverage: voteAverage,
+            genres: genres
+        )
         self.images = images
     }
 }
@@ -30,7 +34,6 @@ extension Domain.MovieDetail {
         id: 1,
         title: "Super Mario Bros.: The Film \(arc4random() % 100)",
         poster: URL(string: "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/ij8sapIEbLf2g8npOu6XgsQS2w0.jpg")!,
-        genresIDs: [0, 1, 2, 3],
         voteAverage: 3.4,
         genres: [.animation, .adventure, .family, .fantasy],
         images: .init(

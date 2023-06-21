@@ -10,6 +10,11 @@ import Foundation
 
 enum CarouselsServiceImplError: Error {
     case misconfiguration
+    case emptyHighlighted
+}
+
+private enum CarouselsServiceImplConstants {
+    static let highlightedCount: Int = 3
 }
 
 public class CarouselsServiceImpl {
@@ -35,40 +40,33 @@ private extension CarouselsServiceImpl {
 
 extension CarouselsServiceImpl: CarouselsService {
 
-    public func topRatedMovie() async throws -> MovieDetail {
-        let topRatedMovies = try await moviesRepository.topRated(page: 1)
-        guard let topRated = topRatedMovies.first else {
-            throw CarouselsServiceError.emptyTopRated
+    public func highlighted() async throws -> [MovieDetail] {
+        // Get highlighted IDs (top upcoming movies)
+        let upcomingMovies = try await moviesRepository.upcoming(page: 1)
+        let topUpcomingMovies = Array(upcomingMovies.prefix(CarouselsServiceImplConstants.highlightedCount))
+        guard !topUpcomingMovies.isEmpty else {
+            throw CarouselsServiceImplError.emptyHighlighted
         }
 
-        var movieDetail = MovieDetail(movie: topRated)
-        let genresIDs = movieDetail.genresIDs
-        let movieID = movieDetail.id
-        async let genresResult = try genres(ids: genresIDs)
-        async let imagesResult = try moviesRepository.images(movieID: movieID)
+        // Getting movies details and images
+        let ids = topUpcomingMovies.map { $0.id }
+        return try await withThrowingTaskGroup(of: MovieDetail.self, returning: [MovieDetail].self) { taskGroup in
+            for id in ids {
+                taskGroup.addTask {
+                    async let detailResult = self.moviesRepository.detail(movieID: id)
+                    async let imagesResult = self.moviesRepository.images(movieID: id)
+                    var (detail, images) = await (try detailResult, try imagesResult)
+                    detail.images = images
+                    return detail
+                }
+            }
 
-        let result = try await [genresResult, imagesResult] as [Any]
-        guard
-            result.count == 2,
-            let genres = result[0] as? [Genre],
-            let images = result[1] as? Images
-        else {
-            throw CarouselsServiceImplError.misconfiguration
+            var allDetails: [MovieDetail] = []
+            for try await result in taskGroup {
+                allDetails.append(result)
+            }
+            return allDetails
         }
-
-        let supportedImages = ["png", "jpeg", "jpg"]
-        let logos = images.logos.filter { $0.image.pathComponents.last?.hasSuffix(supportedImages) == true }
-        let posters = images.posters.filter { $0.image.pathComponents.last?.hasSuffix(supportedImages) == true }
-        let backdrops = images.backdrops.filter { $0.image.pathComponents.last?.hasSuffix(supportedImages) == true }
-
-        movieDetail.genres = genres
-        movieDetail.images = Images(
-            logos: logos,
-            posters: posters,
-            backdrops: backdrops
-        )
-
-        return movieDetail
     }
 
     public func topRated() async throws -> [Movie] {
@@ -84,7 +82,8 @@ extension CarouselsServiceImpl: CarouselsService {
         for var movie in movies {
             movie.genres = try await genres(ids: movie.genresIDs)
         }
-        return movies
+        let upComingTotal = max(movies.count - CarouselsServiceImplConstants.highlightedCount, .zero)
+        return movies.suffix(upComingTotal)
     }
 
     public func popular() async throws -> [Movie] {

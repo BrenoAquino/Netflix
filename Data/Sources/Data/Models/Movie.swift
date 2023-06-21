@@ -5,7 +5,6 @@
 //  Created by Breno Aquino on 22/03/23.
 //
 
-import Domain
 import Foundation
 
 public struct Movie: Decodable {
@@ -35,28 +34,5 @@ public struct Movie: Decodable {
         case backdropPath = "backdrop_path"
         case voteCount = "vote_count"
         case voteAverage = "vote_average"
-    }
-}
-
-// MARK: Converter
-
-extension Movie {
-    func convertToDomain(_ imageDomain: ImageDomainConfig? = nil) -> Domain.Movie? {
-        guard
-            let id,
-            let title,
-            let genreIDs,
-            let voteAverage,
-            let poster = URL(imagePath: posterPath, imageDomain: imageDomain)
-        else {
-            return nil
-        }
-        return Domain.Movie(
-            id: id,
-            title: title,
-            poster: poster,
-            genresIDs: genreIDs,
-            voteAverage: voteAverage
-        )
     }
 }
