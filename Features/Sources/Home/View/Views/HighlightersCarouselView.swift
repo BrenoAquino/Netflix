@@ -13,26 +13,34 @@ struct HighlightersCarouselView: View {
     let movies: [MovieDetailUI]
 
     var body: some View {
-        GeometryReader { proxy in
-            ScrollView(.horizontal) {
-                LazyHStack(spacing: .zero) {
-                    ForEach(movies) { movie in
-                        poster(movie, proxy)
-                    }
+        TabView {
+            ForEach(movies) { movie in
+                GeometryReader { proxy in
+                    let minX = proxy.frame(in: .global).minX
+                    poster(movie, proxy, minX / 2)
+                        .rotation3DEffect(
+                            .degrees(-minX / 10),
+                            axis: (x: 0, y: 1, z: 0)
+                        )
                 }
             }
         }
+        .tabViewStyle(.page(indexDisplayMode: .never))
     }
 
-    @ViewBuilder private func poster(_ movie: MovieDetailUI, _ proxy: GeometryProxy) -> some View {
+    @ViewBuilder private func poster(
+        _ movie: MovieDetailUI,
+        _ proxy: GeometryProxy,
+        _ offsetX: CGFloat = .zero
+    ) -> some View {
         CachedAsyncImage(url: movie.cleanPosterURL ?? movie.posterURL) { data in
             data.image.resizable()
                 .overlay(alignment: .bottom) {
-                    overlay(movie, proxy, data.uiImage.averageColor)
+                    overlay(movie, proxy, data.uiImage.averageColor, offsetX)
                 }
         } placeholder: {
             Text(movie.title)
-                .overlay(alignment: .bottom) { overlay(movie, proxy) }
+                .overlay(alignment: .bottom) { overlay(movie, proxy, nil, offsetX) }
         }
         .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerRadius: RadiusDesignConstant.hard))
@@ -43,13 +51,14 @@ struct HighlightersCarouselView: View {
     @ViewBuilder private func overlay(
         _ movie: MovieDetailUI,
         _ proxy: GeometryProxy,
-        _ averageColor: Color? = nil
+        _ averageColor: Color? = nil,
+        _ offsetX: CGFloat = .zero
     ) -> some View {
         let averageColor = averageColor ?? Color.black
         ZStack {
             VStack {
                 Spacer().frame(height: SpaceDesignConstant.bigL)
-                title(movie, proxy)
+                title(movie, proxy, offsetX)
                 Spacer().frame(height: SpaceDesignConstant.bigL)
             }
         }
@@ -58,12 +67,14 @@ struct HighlightersCarouselView: View {
                 .opacity(0.4)
                 .background(averageColor)
                 .blur(radius: RadiusDesignConstant.blurHard)
-//                .padding(.horizontal, -RadiusDesignConstant.normal)
-//                .padding(.vertical, -RadiusDesignConstant.normal)
         )
     }
 
-    @ViewBuilder private func title(_ movie: MovieDetailUI, _ proxy: GeometryProxy) -> some View {
+    @ViewBuilder private func title(
+        _ movie: MovieDetailUI,
+        _ proxy: GeometryProxy,
+        _ offsetX: CGFloat = .zero
+    ) -> some View {
         CachedAsyncImage(url: movie.logoURL) { data in
             data.image.resizable()
         } placeholder: {
@@ -72,8 +83,7 @@ struct HighlightersCarouselView: View {
         .aspectRatio(contentMode: .fit)
         .padding(.horizontal, SpaceDesignConstant.normal)
         .padding(.horizontal, SpaceDesignConstant.normal)
-//        .frame(maxWidth: proxy.size.width, maxHeight: 180)
-//        .background(Color.purple)
+        .offset(x: offsetX)
     }
 }
 
