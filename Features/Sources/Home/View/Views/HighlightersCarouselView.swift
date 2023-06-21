@@ -64,8 +64,6 @@ struct HighlightersCarouselView: View {
         }
         .background(
             averageColor
-                .opacity(0.4)
-                .background(averageColor)
                 .blur(radius: RadiusDesignConstant.blurHard)
         )
     }
