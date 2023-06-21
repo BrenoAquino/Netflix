@@ -14,6 +14,7 @@ extension MoviesAPIs: API {
              .popular(let config, _),
              .topRated(let config, _),
              .images(let config, _),
+             .cleanImages(let config, _),
              .detail(let config, _):
             return config
         }
@@ -27,7 +28,7 @@ extension MoviesAPIs: API {
             return "movie/top_rated"
         case .popular:
             return "movie/popular"
-        case .images(_, let movieID):
+        case .images(_, let movieID), .cleanImages(_, let movieID):
             return "movie/\(movieID)/images"
         case .detail(_, let movieID):
             return "movie/\(movieID)"
@@ -36,7 +37,7 @@ extension MoviesAPIs: API {
 
     var method: RequestMethod {
         switch self {
-        case .upcoming, .popular, .topRated, .images, .detail:
+        case .upcoming, .popular, .topRated, .images, .cleanImages, .detail:
             return .get
         }
     }
@@ -45,6 +46,8 @@ extension MoviesAPIs: API {
         switch self {
         case .upcoming(_, let page), .popular(_, let page), .topRated(_, let page):
             return ["page": page]
+        case .cleanImages:
+            return ["language": "xx"]
         case .images, .detail:
             return nil
         }

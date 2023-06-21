@@ -15,42 +15,20 @@ enum APIError: Error {
 
 extension API {
 
-    private func generateQueryItems(params: [String : Any]?, additional: [String : Any]) -> [URLQueryItem]? {
-        var items: [URLQueryItem] = []
+    private func generateQueryItems(standards: [String : Any], params: [String : Any]?) -> [URLQueryItem]? {
+        var items: [URLQueryItem] = standards.map { .init(name: $0.key, value: String(describing: $0.value)) }
         if let params = params {
-            for (key, value) in params {
-                items.append(.init(name: key, value: String(describing: value)))
-            }
-        }
-        for (key, value) in additional {
-            items.append(.init(name: key, value: String(describing: value)))
+            items.append(contentsOf: params.map { .init(name: $0.key, value: String(describing: $0.value)) })
         }
         return items.isEmpty ? nil : items
     }
 
-    private func generateHeaders(headers: [String : String]?, additional: [String : String]) -> [String : String]? {
-        var allHeaders: [String : String] = [:]
+    private func generateHeaders(standards: [String : String], headers: [String : String]?) -> [String : String]? {
+        var allHeaders: [String : String] = standards
         if let headers = headers {
-            allHeaders = headers
-            allHeaders.merge(additional) { (_, new) in new }
-        } else {
-            allHeaders = additional
+            allHeaders.merge(headers) { (_, new) in new }
         }
         return allHeaders
-    }
-
-    private func generateQueryItems(params: [String: Any]?) -> [URLQueryItem]? {
-        var items: [URLQueryItem] = []
-
-        if let params = params {
-            for (key, value) in params {
-                items.append(
-                    .init(name: key, value: String(describing: value))
-                )
-            }
-        }
-
-        return items.isEmpty ? nil : items
     }
 
     func createRequest() throws -> URLRequest {
@@ -58,14 +36,14 @@ extension API {
             throw APIError.invalidURL
         }
 
-        components.queryItems = generateQueryItems(params: queryParams, additional: domain.additionalQueryParams)
+        components.queryItems = generateQueryItems(standards: domain.standardsQueryParams, params: queryParams)
         guard let url = components.url else {
             throw APIError.invalidQueryParameters
         }
 
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        request.allHTTPHeaderFields = generateHeaders(headers: headers, additional: domain.additionalHeaders)
+        request.allHTTPHeaderFields = generateHeaders(standards: domain.standardsHeaders, headers: headers)
         return request
     }
 }
