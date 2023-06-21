@@ -1,5 +1,5 @@
 //
-//  ContentUI.swift
+//  MovieUI.swift
 //  
 //
 //  Created by Breno Aquino on 22/03/23.
@@ -8,7 +8,7 @@
 import Domain
 import Foundation
 
-class ContentUI {
+class MovieUI {
 
     /// Content title
     let title: String
@@ -31,6 +31,12 @@ class ContentUI {
     init(movie: Domain.Movie) {
         title = movie.title
         genres = movie.genres.map { GenreUI(genre: $0) }
-        portraitPosterURL = URL(string: "https://image.tmdb.org/t/p/original" + movie.poster)!
+        portraitPosterURL = movie.poster
+    }
+
+    init(movie: Domain.MovieDetail) {
+        title = movie.title
+        genres = movie.genres.map { GenreUI(genre: $0) }
+        portraitPosterURL = movie.poster
     }
 }

@@ -38,13 +38,25 @@ public struct Movie: Decodable {
     }
 }
 
+// MARK: Converter
+
 extension Movie {
-    func convertToDomain() -> Domain.Movie {
-        Domain.Movie(
-            title: title ?? "",
-            poster: posterPath ?? "",
-            genresIDs: genreIDs ?? [],
-            voteAverage: voteAverage ?? .zero
+    func convertToDomain(_ imageDomain: ImageDomainConfig? = nil) -> Domain.Movie? {
+        guard
+            let id,
+            let title,
+            let genreIDs,
+            let voteAverage,
+            let poster = URL(imagePath: posterPath, imageDomain: imageDomain)
+        else {
+            return nil
+        }
+        return Domain.Movie(
+            id: id,
+            title: title,
+            poster: poster,
+            genresIDs: genreIDs,
+            voteAverage: voteAverage
         )
     }
 }

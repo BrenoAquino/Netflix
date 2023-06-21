@@ -20,7 +20,7 @@ public struct HomeView: View {
     public var body: some View {
         content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.purple)
+            .background(Color.black)
             .task {
                 await viewModel.fetchData()
             }
@@ -73,7 +73,7 @@ public struct HomeView: View {
 
     @ViewBuilder private var contentHeader: some View {
         if let mainContent = viewModel.mainContent {
-            PosterView(content: mainContent)
+            PosterView(movieDetail: mainContent)
                 .shadow(radius: RadiusDesignConstant.hard)
         }
     }

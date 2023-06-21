@@ -14,7 +14,7 @@ public enum CarouselsServiceError: Error {
 
 public protocol CarouselsService {
     /// Get top rated movie
-    func topRatedMovie() async throws -> Movie
+    func topRatedMovie() async throws -> MovieDetail
     /// Get top rated movies
     func topRated() async throws -> [Movie]
     /// Get upcoming movies

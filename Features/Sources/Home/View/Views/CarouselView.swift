@@ -26,14 +26,14 @@ struct CarouselView: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: SpaceDesignConstant.smallM) {
-                    ForEach(carousel.contents, id: \.title, content: poster)
+                    ForEach(carousel.movies, id: \.title, content: poster)
                 }
                 .padding(.horizontal, SpaceDesignConstant.normal)
             }
         }
     }
 
-    private func poster(_ content: ContentUI) -> some View {
+    private func poster(_ content: MovieUI) -> some View {
         CachedAsyncImage(
             url: content.portraitPosterURL,
             content: { image in
@@ -67,7 +67,7 @@ struct CarouselView_Previews: PreviewProvider {
     static var previews: some View {
         CarouselView(carousel: .init(
             title: "Series Aclamadas",
-            contents: [
+            movies: [
                 .init(movie: Domain.Movie.marioBros),
                 .init(movie: Domain.Movie.marioBros),
                 .init(movie: Domain.Movie.marioBros),

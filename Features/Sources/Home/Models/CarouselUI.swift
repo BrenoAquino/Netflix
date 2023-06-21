@@ -13,15 +13,10 @@ class CarouselUI {
     /// Carousel title
     let title: String
     /// Carousel's content
-    let contents: [ContentUI]
+    let movies: [MovieUI]
 
-    init(title: String, contents: [ContentUI]) {
+    init(title: String, movies: [MovieUI]) {
         self.title = title
-        self.contents = contents
-    }
-
-    init(carousel: Domain.Carousel) {
-        title = carousel.title
-        contents = carousel.contents.map { ContentUI(movie: $0) }
+        self.movies = movies
     }
 }

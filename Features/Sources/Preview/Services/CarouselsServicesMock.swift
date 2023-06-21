@@ -12,7 +12,7 @@ import Foundation
 public class CarouselsServicesMock: Domain.CarouselsService {
     public init() {}
 
-    public func topRatedMovie() async throws -> Movie {
+    public func topRatedMovie() async throws -> MovieDetail {
         .marioBros
     }
 

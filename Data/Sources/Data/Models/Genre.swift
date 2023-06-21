@@ -14,11 +14,11 @@ public struct Genre: Decodable {
     let name: String?
 }
 
+// MARK: Converter
+
 extension Genre {
-    func convertToDomain() -> Domain.Genre {
-        Domain.Genre(
-            id: id ?? .zero,
-            title: name ?? ""
-        )
+    func convertToDomain() -> Domain.Genre? {
+        guard let id, let name else { return nil }
+        return Domain.Genre(id: id, title: name)
     }
 }

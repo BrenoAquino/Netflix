@@ -11,8 +11,10 @@ import Domain
 public class MoviesRepositoryImpl {
 
     private let moviesRemoteDataSource: MoviesRemoteDataSource
+    private let imageDomain: ImageDomainConfig?
 
-    public init(moviesRemoteDataSource: MoviesRemoteDataSource) {
+    public init(imageDomain: ImageDomainConfig? = nil, moviesRemoteDataSource: MoviesRemoteDataSource) {
+        self.imageDomain = imageDomain
         self.moviesRemoteDataSource = moviesRemoteDataSource
     }
 }
@@ -23,16 +25,21 @@ extension MoviesRepositoryImpl: Domain.MoviesRepository {
 
     public func upcoming(page: Int) async throws -> [Domain.Movie] {
         let movies = try await moviesRemoteDataSource.upcoming(page: page)
-        return movies.results.map { $0.convertToDomain() }
+        return movies.results.compactMap { $0.convertToDomain(imageDomain) }
     }
 
     public func topRated(page: Int) async throws -> [Domain.Movie] {
         let movies = try await moviesRemoteDataSource.topRated(page: page)
-        return movies.results.map { $0.convertToDomain() }
+        return movies.results.compactMap { $0.convertToDomain(imageDomain) }
     }
 
     public func popular(page: Int) async throws -> [Domain.Movie] {
         let movies = try await moviesRemoteDataSource.popular(page: page)
-        return movies.results.map { $0.convertToDomain() }
+        return movies.results.compactMap { $0.convertToDomain(imageDomain) }
+    }
+
+    public func images(movieID: Int) async throws -> Domain.Images {
+        let images = try await moviesRemoteDataSource.images(movieID: movieID)
+        return images.convertToDomain(imageDomain)
     }
 }

@@ -9,13 +9,22 @@ import Foundation
 
 public struct Movie {
 
+    public let id: Int
     public let title: String
-    public let poster: String
+    public let poster: URL
     public let genresIDs: [Int]
     public let voteAverage: Double
     public var genres: [Genre]
 
-    public init(title: String, poster: String, genresIDs: [Int], voteAverage: Double) {
+    public init(
+        id: Int,
+        title: String,
+        poster: URL,
+        genresIDs: [Int],
+        voteAverage: Double,
+        images: Images? = nil
+    ) {
+        self.id = id
         self.title = title
         self.poster = poster
         self.genresIDs = genresIDs

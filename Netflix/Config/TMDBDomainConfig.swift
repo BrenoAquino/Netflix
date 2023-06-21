@@ -15,3 +15,10 @@ struct TMDBConfig: DomainConfig {
         ["api_key" : apiKey]
     }
 }
+
+struct TMDBImageDomainConfig: ImageDomainConfig {
+    func preProcessing(_ imagePath: String?) -> String? {
+        guard let imagePath else { return nil }
+        return "https://image.tmdb.org/t/p/original" + imagePath
+    }
+}

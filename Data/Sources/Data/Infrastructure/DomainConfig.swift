@@ -16,7 +16,13 @@ public protocol DomainConfig {
     var additionalHeaders: [String : String] { get }
 }
 
+public protocol ImageDomainConfig {
+    /// Image pre processing
+    func preProcessing(_ imagePath: String?) -> String?
+}
+
 public extension DomainConfig {
     var additionalQueryParams: [String : String] { [:] }
     var additionalHeaders: [String : String] { [:] }
+    func preImageProcessing(_ imagePath: String) -> String { imagePath }
 }

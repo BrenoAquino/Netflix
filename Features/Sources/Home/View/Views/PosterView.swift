@@ -10,15 +10,15 @@ import SwiftUI
 
 struct PosterView: View {
     
-    private let content: ContentUI
+    private let movieDetail: MovieDetailUI
     
-    init(content: ContentUI) {
-        self.content = content
+    init(movieDetail: MovieDetailUI) {
+        self.movieDetail = movieDetail
     }
     
     var body: some View {
-        AsyncImage(
-            url: content.portraitPosterURL,
+        CachedAsyncImage(
+            url: movieDetail.posterURL,
             content: { image in
                 image
                     .resizable()
@@ -56,15 +56,22 @@ struct PosterView: View {
     }
     
     private var title: some View {
-        Text(content.title.uppercased())
-            .font(.title)
-            .fontWeight(.semibold)
-            .multilineTextAlignment(.center)
-            .foregroundColor(.white)
+        CachedAsyncImage(
+            url: movieDetail.logoURL) { image in
+                image.resizable()
+            } placeholder: {
+                Text(movieDetail.title.uppercased())
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+            }
+            .frame(height: 100)
+            .aspectRatio(CGSize(width: 3878, height: 2966), contentMode: .fit)
     }
     
     private var categories: some View {
-        Text(content.genresJoined)
+        Text(movieDetail.genresJoined)
             .font(.subheadline)
             .fontWeight(.regular)
             .multilineTextAlignment(.center)
@@ -109,17 +116,15 @@ struct PosterView: View {
 #if DEBUG
 struct PosterView_Previews: PreviewProvider {
     static var previews: some View {
-        PosterView(content: .init(
-            title: "Super Mario Bros.: O Filme",
+        PosterView(movieDetail: .init(
+            title: "Super Mario Bros.: The Film",
             genres: [
-                .init(name: "Animação"),
-                .init(name: "Aventura"),
-                .init(name: "Família"),
-                .init(name: "Fantasia")
+                .init(name: "adventure"),
+                .init(name: "animation")
             ],
-            portraitPosterURL: URL(
-                string: "https://www.themoviaedb.org/t/p/w300_and_h450_bestv2/ij8sapIEbLf2g8npOu6XgsQS2w0.jpg"
-            )!
+            posterURL: URL(string: "https://image.tmdb.org/t/p/original/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg")!,
+            backdropURL: URL(string: "https://image.tmdb.org/t/p/original/9n2tJBplPbgR2ca05hS5CKXwP2c.jpg")!,
+            logoURL: URL(string: "https://image.tmdb.org/t/p/original/sst2kO7ySyAm3z5haWXUszOVWi2.png")!
         ))
     }
 }
