@@ -8,11 +8,26 @@
 import Foundation
 import SwiftUI
 
-// https://github.dev/lorenzofiamingo/swiftui-cached-async-image/blob/main/Sources/CachedAsyncImage/CachedAsyncImage.swift
-
 public enum CachedAsyncImageError: Error {
     case missingURL
     case invalidData
+}
+
+public enum CachedAsyncImagePhase {
+    case empty
+    case success(ImageData)
+    case failure(Error)
+}
+
+public struct ImageData {
+    public let image: Image
+    public let uiImage: UIImage
+
+    init?(data: Data) {
+        guard let uiImage = UIImage(data: data) else { return nil }
+        self.uiImage = uiImage
+        self.image = Image(uiImage: uiImage)
+    }
 }
 
 public struct CachedAsyncImage<Content: View, Placeholder: View>: View {
@@ -20,15 +35,15 @@ public struct CachedAsyncImage<Content: View, Placeholder: View>: View {
     private let url: URL?
     private let urlSession: URLSession
 
-    @State private var phase: AsyncImagePhase = .empty
+    @State private var phase: CachedAsyncImagePhase = .empty
 
-    @ViewBuilder private let content: (Image) -> Content
+    @ViewBuilder private let content: (ImageData) -> Content
     @ViewBuilder private let placeholder: () -> Placeholder
 
     public init(
         url: URL?,
         urlSession: URLSession = .shared,
-        content: @escaping (Image) -> Content,
+        content: @escaping (ImageData) -> Content,
         placeholder: @escaping () -> Placeholder
     ) {
         self.url = url
@@ -48,8 +63,6 @@ public struct CachedAsyncImage<Content: View, Placeholder: View>: View {
                 content(image)
             case .empty, .failure:
                 placeholder()
-            @unknown default:
-                fatalError()
             }
         }
     }
@@ -79,34 +92,21 @@ extension CachedAsyncImage {
         }
     }
 
-    private func sourceImage(request: URLRequest) async throws  -> Image {
+    private func sourceImage(request: URLRequest) async throws  -> ImageData {
         let (data, response) = try await urlSession.data(for: request)
         let cachedURLResponse = CachedURLResponse(response: response, data: data, storagePolicy: .allowed)
         urlSession.configuration.urlCache?.storeCachedResponse(cachedURLResponse, for: request)
 
-        guard let image = Image(data: data) else {
+        guard let image = ImageData(data: data) else {
             throw CachedAsyncImageError.invalidData
         }
-
         return image
     }
 
-    private func cachedImage(request: URLRequest) -> Image? {
-        guard
-            let cachedURLResponse = urlSession.configuration.urlCache?.cachedResponse(for: request),
-            let image = Image(data: cachedURLResponse.data)
-        else {
+    private func cachedImage(request: URLRequest) -> ImageData? {
+        guard let cachedURLResponse = urlSession.configuration.urlCache?.cachedResponse(for: request) else {
             return nil
         }
-        return image
-    }
-}
-
-// MARK: Utils
-
-private extension Image {
-    init?(data: Data) {
-        guard let image = UIImage(data: data) else { return nil }
-        self.init(uiImage: image)
+        return ImageData(data: cachedURLResponse.data)
     }
 }

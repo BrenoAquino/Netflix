@@ -19,8 +19,8 @@ struct PosterView: View {
     var body: some View {
         CachedAsyncImage(
             url: movieDetail.posterURL,
-            content: { image in
-                image
+            content: { data in
+                data.image
                     .resizable()
                     .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
             },
@@ -57,8 +57,8 @@ struct PosterView: View {
     
     private var title: some View {
         CachedAsyncImage(
-            url: movieDetail.logoURL) { image in
-                image.resizable()
+            url: movieDetail.logoURL) { data in
+                data.image.resizable()
             } placeholder: {
                 Text(movieDetail.title.uppercased())
                     .font(.title)

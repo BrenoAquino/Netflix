@@ -20,7 +20,7 @@ public struct HomeView: View {
     public var body: some View {
         content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.black)
+            .background(background)
             .task { await viewModel.fetchData() }
     }
 
@@ -60,13 +60,14 @@ public struct HomeView: View {
                 .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
-        .ignoresSafeArea(.all)
         .listRowInsets(EdgeInsets())
         .listBackgroundColor(Color.clear)
     }
 
     private var highlighters: some View {
         HighlightersCarouselView(movies: viewModel.highlighters)
+            .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
+            .padding(.bottom, SpaceDesignConstant.normal)
     }
 
     private var carousels: some View {

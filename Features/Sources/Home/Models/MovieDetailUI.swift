@@ -61,13 +61,14 @@ class MovieDetailUI {
         let logos = movie.images.logos.sortedByVoteAverage()
         logoURL = logos.findBestImage(aspectRationComparative: .highest)?.image
 
-        let portrait = AspectDesignConstant.portrait.heightDividedByWidth
+        let portrait = AspectDesignConstant.portrait.widthDividedByHeight
         let posters = movie.images.posters.sortedByVoteAverage()
         posterURL = posters.findBestImage(aspectRationComparative: .closest(aspectRation: portrait))?.image
         let cleanPosters = movie.cleanImages.posters.sortedByVoteAverage()
         cleanPosterURL = cleanPosters.findBestImage(aspectRationComparative: .closest(aspectRation: portrait))?.image
+        Logger.log(cleanPosterURL?.absoluteString)
 
-        let landscape = AspectDesignConstant.landscape.heightDividedByWidth
+        let landscape = AspectDesignConstant.landscape.widthDividedByHeight
         let backdrops = movie.images.backdrops.sortedByVoteAverage()
         backdropURL = backdrops.findBestImage(aspectRationComparative: .closest(aspectRation: landscape))?.image
         let cleanBackdrops = movie.cleanImages.backdrops.sortedByVoteAverage()
