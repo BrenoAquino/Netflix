@@ -47,6 +47,11 @@ extension MoviesRepositoryImpl: Domain.MoviesRepository {
         return images.convertToDomain(imageDomain)
     }
 
+    public func cleanImages(movieID: Int) async throws -> Domain.Images {
+        let images = try await moviesRemoteDataSource.cleanImages(movieID: movieID)
+        return images.convertToDomain(imageDomain)
+    }
+
     public func detail(movieID: Int) async throws -> Domain.MovieDetail {
         let detail = try await moviesRemoteDataSource.detail(movieID: movieID)
         guard let detailDomain = detail.convertToDomain(imageDomain) else {

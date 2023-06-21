@@ -11,7 +11,7 @@ public struct Movie {
 
     public let id: Int
     public let title: String
-    public let poster: URL
+    public let poster: URL?
     public let genresIDs: [Int]
     public let voteAverage: Double
     public var genres: [Genre]
@@ -19,10 +19,9 @@ public struct Movie {
     public init(
         id: Int,
         title: String,
-        poster: URL,
+        poster: URL?,
         genresIDs: [Int],
-        voteAverage: Double,
-        images: Images? = nil
+        voteAverage: Double
     ) {
         self.id = id
         self.title = title

@@ -12,7 +12,7 @@ public struct MovieDetail: Decodable {
     let id: Int?
     let imdbID: String?
     let adult: Bool?
-    let backgropPath: String?
+    let backdropPath: String?
     let budget: Int?
     let genres: [Genre]?
     let originalLanguage: String?
@@ -30,4 +30,18 @@ public struct MovieDetail: Decodable {
     let title: String?
     let voteAverage: Double?
     let voteCount: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case id, adult, budget, genres, overview, popularity, revenue, runtime, status, tagline, title
+        case imdbID = "imdb_id"
+        case backdropPath = "backdrop_path"
+        case originalLanguage = "original_language"
+        case originalTitle = "original_title"
+        case posterPath = "poster_path"
+        case productionCompanies = "production_companies"
+        case productionCountries = "production_countries"
+        case releaseDate = "release_date"
+        case voteAverage = "vote_average"
+        case voteCount = "vote_count"
+    }
 }

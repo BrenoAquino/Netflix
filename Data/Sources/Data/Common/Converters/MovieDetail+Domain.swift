@@ -14,15 +14,13 @@ extension MovieDetail {
             let id,
             let title,
             let voteAverage,
-            let genres,
-            let poster = URL(imagePath: posterPath, imageDomain: imageDomain)
+            let genres
         else {
             return nil
         }
         return Domain.MovieDetail(
             id: id,
             title: title,
-            poster: poster,
             voteAverage: voteAverage,
             genres: genres.compactMap { $0.convertToDomain() }
         )

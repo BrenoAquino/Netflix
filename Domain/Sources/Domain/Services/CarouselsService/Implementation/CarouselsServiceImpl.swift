@@ -34,6 +34,17 @@ private extension CarouselsServiceImpl {
     private func genres(ids: [Int]) async throws -> [Genre] {
         return await ids.asyncCompactMap { [weak self] in try? await self?.genresRepository.genre(id:$0) }
     }
+
+    private func movie(id: Int) async throws -> MovieDetail {
+        async let detailRetriever = self.moviesRepository.detail(movieID: id)
+        async let imagesRetriever = self.moviesRepository.images(movieID: id)
+        async let cleanImagesRetriever = self.moviesRepository.cleanImages(movieID: id)
+
+        var (detail, images, cleanImages) = try await (detailRetriever, imagesRetriever, cleanImagesRetriever)
+        detail.images = images
+        detail.cleanImages = cleanImages
+        return detail
+    }
 }
 
 // MARK: - HomeUseCase
@@ -50,20 +61,16 @@ extension CarouselsServiceImpl: CarouselsService {
 
         // Getting movies details and images
         let ids = topUpcomingMovies.map { $0.id }
-        return try await withThrowingTaskGroup(of: MovieDetail.self, returning: [MovieDetail].self) { taskGroup in
+        return try await withThrowingTaskGroup(of: MovieDetail?.self, returning: [MovieDetail].self) { [weak self] taskGroup in
             for id in ids {
-                taskGroup.addTask {
-                    async let detailResult = self.moviesRepository.detail(movieID: id)
-                    async let imagesResult = self.moviesRepository.images(movieID: id)
-                    var (detail, images) = await (try detailResult, try imagesResult)
-                    detail.images = images
-                    return detail
-                }
+                taskGroup.addTask { [weak self] in try await self?.movie(id: id) }
             }
 
             var allDetails: [MovieDetail] = []
             for try await result in taskGroup {
-                allDetails.append(result)
+                if let result {
+                    allDetails.append(result)
+                }
             }
             return allDetails
         }

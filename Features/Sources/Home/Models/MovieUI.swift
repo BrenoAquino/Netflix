@@ -17,25 +17,25 @@ class MovieUI {
     /// Content categories
     let genres: [GenreUI]
     /// Portrait poster
-    let portraitPosterURL: URL
+    let posterURL: URL?
 
     /// Categories joined
     var genresJoined: String {
         genres.map { $0.name }.joined(separator: " • ")
     }
 
-    init(id: Int, title: String, genres: [GenreUI], portraitPosterURL: URL) {
+    init(id: Int, title: String, genres: [GenreUI], posterURL: URL?) {
         self.id = id
         self.title = title
         self.genres = genres
-        self.portraitPosterURL = portraitPosterURL
+        self.posterURL = posterURL
     }
 
     init(movie: Domain.Movie) {
         id = movie.id
         title = movie.title
         genres = movie.genres.map { GenreUI(genre: $0) }
-        portraitPosterURL = movie.poster
+        posterURL = movie.poster
     }
 }
 

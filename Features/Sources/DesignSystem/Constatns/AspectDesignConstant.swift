@@ -14,3 +14,8 @@ public enum AspectDesignConstant {
     /// Landscape - Width (2) x Height (3)
     public static let landscape: CGSize = CGSize(width: 16, height: 9)
 }
+
+public extension CGSize {
+    var heightDividedByWidth: CGFloat { height / width }
+    var widthDividedByHeight: CGFloat { width / height }
+}

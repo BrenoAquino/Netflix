@@ -35,7 +35,7 @@ struct CarouselView: View {
 
     private func poster(_ content: MovieUI) -> some View {
         CachedAsyncImage(
-            url: content.portraitPosterURL,
+            url: content.posterURL,
             content: { image in
                 image.resizable()
             },

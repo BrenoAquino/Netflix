@@ -116,6 +116,10 @@ struct PosterView: View {
 #if DEBUG
 struct PosterView_Previews: PreviewProvider {
     static var previews: some View {
+        let posterURL = URL(string: "https://image.tmdb.org/t/p/original/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg")!
+        let backdropURL = URL(string: "https://image.tmdb.org/t/p/original/9n2tJBplPbgR2ca05hS5CKXwP2c.jpg")!
+        let logoURL = URL(string: "https://image.tmdb.org/t/p/original/sst2kO7ySyAm3z5haWXUszOVWi2.png")!
+
         PosterView(movieDetail: .init(
             id: 123,
             title: "Super Mario Bros.: The Film",
@@ -123,9 +127,11 @@ struct PosterView_Previews: PreviewProvider {
                 .init(name: "adventure"),
                 .init(name: "animation")
             ],
-            posterURL: URL(string: "https://image.tmdb.org/t/p/original/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg")!,
-            backdropURL: URL(string: "https://image.tmdb.org/t/p/original/9n2tJBplPbgR2ca05hS5CKXwP2c.jpg")!,
-            logoURL: URL(string: "https://image.tmdb.org/t/p/original/sst2kO7ySyAm3z5haWXUszOVWi2.png")!
+            posterURL: posterURL,
+            cleanPosterURL: posterURL,
+            backdropURL: backdropURL,
+            cleanBackdropURL: backdropURL,
+            logoURL: logoURL
         ))
     }
 }

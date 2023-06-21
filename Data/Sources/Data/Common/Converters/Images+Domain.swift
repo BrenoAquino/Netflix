@@ -12,11 +12,12 @@ extension Image {
     func convertToDomain(_ imageDomain: ImageDomainConfig? = nil) -> Domain.Image? {
         guard
             let aspectRation,
+            let voteAverage,
             let image = URL(imagePath: imagePath, imageDomain: imageDomain)
         else {
             return nil
         }
-        return Domain.Image(aspectRation: aspectRation, image: image)
+        return Domain.Image(aspectRation: aspectRation, image: image, voteAverage: voteAverage)
     }
 }
 

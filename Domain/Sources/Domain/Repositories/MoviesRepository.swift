@@ -16,6 +16,8 @@ public protocol MoviesRepository {
     func popular(page: Int) async throws -> [Movie]
     /// Get all images related to a specific movie
     func images(movieID: Int) async throws -> Images
+    /// Get all clean images related to a specific movie
+    func cleanImages(movieID: Int) async throws -> Images
     /// Get all metadata related to a specific movie
     func detail(movieID: Int) async throws -> MovieDetail
 }

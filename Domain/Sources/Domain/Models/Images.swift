@@ -11,10 +11,12 @@ public struct Image {
 
     public let aspectRation: Double
     public let image: URL
+    public let voteAverage: Double
 
-    public init(aspectRation: Double, image: URL) {
+    public init(aspectRation: Double, image: URL, voteAverage: Double) {
         self.aspectRation = aspectRation
         self.image = image
+        self.voteAverage = voteAverage
     }
 }
 
