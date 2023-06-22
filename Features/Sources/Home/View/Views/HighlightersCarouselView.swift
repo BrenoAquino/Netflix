@@ -10,18 +10,30 @@ import SwiftUI
 
 struct HighlightersCarouselView: View {
 
+    // MARK: - Variables
+
+    // MARK: Parallax
+
+    private let titleSpeedDivider: CGFloat = 2
+    private let finalAngle: Angle = .degrees(45)
+    private let parallaxImageMargin: CGFloat = 16
+
+    // MARK: Exhibition
+
     let movies: [MovieDetailUI]
+
+    // MARK: - Views
 
     var body: some View {
         TabView {
             ForEach(movies) { movie in
                 GeometryReader { proxy in
-                    let minX = proxy.frame(in: .global).minX
-                    poster(movie, proxy, minX / 2)
-                        .rotation3DEffect(
-                            .degrees(-minX / 10),
-                            axis: (x: 0, y: 1, z: 0)
-                        )
+                    let currentX = proxy.frame(in: .global).minX
+                    let rotationAngle = -finalAngle * currentX / proxy.size.width
+                    let titleOffsetX = currentX / titleSpeedDivider
+
+                    poster(movie, proxy, rotationAngle, titleOffsetX)
+                        .rotation3DEffect(rotationAngle, axis: (x: 0, y: 1, z: 0))
                 }
             }
         }
@@ -31,34 +43,39 @@ struct HighlightersCarouselView: View {
     @ViewBuilder private func poster(
         _ movie: MovieDetailUI,
         _ proxy: GeometryProxy,
-        _ offsetX: CGFloat = .zero
+        _ rotationAngle: Angle = .degrees(.zero),
+        _ titleOffsetX: CGFloat = .zero
     ) -> some View {
         CachedAsyncImage(url: movie.cleanPosterURL ?? movie.posterURL) { data in
-            data.image.resizable()
+            data.image
+                .resizable()
                 .overlay(alignment: .bottom) {
-                    overlay(movie, proxy, data.uiImage.averageColor, offsetX)
+                    titleContainer(movie, proxy, data.uiImage.averageColor, titleOffsetX)
                 }
         } placeholder: {
             Text(movie.title)
-                .overlay(alignment: .bottom) { overlay(movie, proxy, nil, offsetX) }
+                .overlay(alignment: .bottom) {
+                    titleContainer(movie, proxy, nil, titleOffsetX)
+                }
         }
         .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
+        .padding(-parallaxImageMargin)
         .clipShape(RoundedRectangle(cornerRadius: RadiusDesignConstant.hard))
         .padding(.horizontal, SpaceDesignConstant.normal)
         .frame(width: proxy.size.width)
     }
 
-    @ViewBuilder private func overlay(
+    @ViewBuilder private func titleContainer(
         _ movie: MovieDetailUI,
         _ proxy: GeometryProxy,
         _ averageColor: Color? = nil,
-        _ offsetX: CGFloat = .zero
+        _ titleOffsetX: CGFloat = .zero
     ) -> some View {
         let averageColor = averageColor ?? Color.black
         ZStack {
             VStack {
                 Spacer().frame(height: SpaceDesignConstant.bigL)
-                title(movie, proxy, offsetX)
+                title(movie, proxy, titleOffsetX)
                 Spacer().frame(height: SpaceDesignConstant.bigL)
             }
         }
