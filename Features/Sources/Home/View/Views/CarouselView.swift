@@ -10,7 +10,6 @@ import SwiftUI
 
 struct CarouselView: View {
 
-    private let parallaxImageMargin: CGFloat = 4
     private let carousel: CarouselUI
 
     init(carousel: CarouselUI) {
@@ -28,10 +27,8 @@ struct CarouselView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: SpaceDesignConstant.smallM) {
                     ForEach(carousel.movies) { movie in
-                        GeometryReader { proxy in
-                            poster(movie)
-                        }
-                        .aspectRatio(contentMode: .fit)
+                        poster(movie)
+                            .frame(width: DesignConstants.Carousel.posterWidth)
                     }
                 }
                 .padding(.horizontal, SpaceDesignConstant.normal)
@@ -50,8 +47,6 @@ struct CarouselView: View {
                 placeholder(content.title)
             })
         .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
-        .frame(width: DesignConstants.Carousel.posterWidth)
-        .padding(-parallaxImageMargin)
         .clipShape(RoundedRectangle(cornerRadius: RadiusDesignConstant.normal))
     }
 
@@ -84,7 +79,12 @@ struct CarouselView_Previews: PreviewProvider {
                 .init(movie: Domain.Movie.marioBros)
             ]
         ))
-        .previewLayout(.sizeThatFits)
+
+        HomeView(
+            viewModel: HomeViewModel(
+                carouselsService: Preview.CarouselsServicesMock()
+            )
+        )
     }
 }
 #endif
