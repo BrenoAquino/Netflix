@@ -36,6 +36,7 @@ struct HighlightersCarouselView: View {
                         .rotation3DEffect(rotationAngle, axis: (x: 0, y: 1, z: 0))
                         .position(proxy.frame(in: .local).center)
                 }
+                .padding(SpaceDesignConstant.normal)
             }
         }
         .tabViewStyle(.page(indexDisplayMode: .never))

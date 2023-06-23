@@ -58,7 +58,6 @@ public struct HomeView: View {
 
     private var highlighters: some View {
         HighlightersCarouselView(movies: viewModel.highlighters)
-            .padding(SpaceDesignConstant.normal)
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets())
             .listRowBackground(Color.purple)
