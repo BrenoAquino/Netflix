@@ -50,31 +50,29 @@ public struct HomeView: View {
     private var content: some View {
         List {
             highlighters
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets())
-                .listRowBackground(Color.clear)
-
             carousels
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets())
-                .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
-        .listRowInsets(EdgeInsets())
         .listBackgroundColor(Color.clear)
     }
 
     private var highlighters: some View {
         HighlightersCarouselView(movies: viewModel.highlighters)
-            .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
-            .padding(.bottom, SpaceDesignConstant.normal)
+            .padding(SpaceDesignConstant.normal)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.purple)
     }
 
     private var carousels: some View {
         ForEach(viewModel.carousels, id: \.title) {
             CarouselView(carousel: $0)
+                .background(Color.blue)
                 .padding(.bottom, SpaceDesignConstant.normal)
         }
+        .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets())
+        .listRowBackground(Color.clear)
     }
 }
 

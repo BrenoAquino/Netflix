@@ -5,6 +5,7 @@
 //  Created by Breno Aquino on 21/06/23.
 //
 
+import Common
 import DesignSystem
 import SwiftUI
 
@@ -27,52 +28,51 @@ struct HighlightersCarouselView: View {
         TabView {
             ForEach(movies) { movie in
                 GeometryReader { proxy in
-                    let currentX = proxy.frame(in: .global).minX
+                    let currentX = proxy.frame(in: .global).minX - SpaceDesignConstant.normal
                     let rotationAngle = -finalAngle * currentX / proxy.size.width
                     let titleOffsetX = currentX / titleSpeedDivider
 
-                    poster(movie, proxy, titleOffsetX)
+                    poster(movie, titleOffsetX)
                         .rotation3DEffect(rotationAngle, axis: (x: 0, y: 1, z: 0))
+                        .position(proxy.frame(in: .local).center)
                 }
             }
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
+        .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
     }
 
     @ViewBuilder private func poster(
         _ movie: MovieDetailUI,
-        _ proxy: GeometryProxy,
         _ titleOffsetX: CGFloat = .zero
     ) -> some View {
         CachedAsyncImage(url: movie.cleanPosterURL ?? movie.posterURL) { data in
             data.image
                 .resizable()
                 .overlay(alignment: .bottom) {
-                    titleContainer(movie, proxy, data.uiImage.averageColor, titleOffsetX)
+                    titleContainer(movie, titleOffsetX, data.uiImage.averageColor)
                 }
         } placeholder: {
             Text(movie.title)
                 .overlay(alignment: .bottom) {
-                    titleContainer(movie, proxy, nil, titleOffsetX)
+                    titleContainer(movie, titleOffsetX)
                 }
         }
         .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerRadius: RadiusDesignConstant.hard))
-        .padding(.horizontal, SpaceDesignConstant.normal)
-        .frame(width: proxy.size.width)
+        .frame(maxWidth: .infinity)
     }
 
     @ViewBuilder private func titleContainer(
         _ movie: MovieDetailUI,
-        _ proxy: GeometryProxy,
-        _ averageColor: Color? = nil,
-        _ titleOffsetX: CGFloat = .zero
+        _ titleOffsetX: CGFloat = .zero,
+        _ averageColor: Color? = nil
     ) -> some View {
         let averageColor = averageColor ?? Color.black
         ZStack {
             VStack {
                 Spacer().frame(height: SpaceDesignConstant.bigL)
-                title(movie, proxy, titleOffsetX)
+                title(movie, titleOffsetX)
                 Spacer().frame(height: SpaceDesignConstant.bigL)
             }
         }
@@ -84,7 +84,6 @@ struct HighlightersCarouselView: View {
 
     @ViewBuilder private func title(
         _ movie: MovieDetailUI,
-        _ proxy: GeometryProxy,
         _ titleOffsetX: CGFloat = .zero
     ) -> some View {
         CachedAsyncImage(url: movie.logoURL) { data in
@@ -109,6 +108,13 @@ struct HighlightersCarouselView_Previews: PreviewProvider {
             .init(movie: Domain.MovieDetail.marioBros),
             .init(movie: Domain.MovieDetail.spiderMan),
         ])
+        .background(Color.purple)
+
+        HomeView(
+            viewModel: HomeViewModel(
+                carouselsService: Preview.CarouselsServicesMock()
+            )
+        )
     }
 }
 #endif
