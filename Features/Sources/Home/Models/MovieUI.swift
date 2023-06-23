@@ -39,4 +39,4 @@ class MovieUI {
     }
 }
 
-extension Movie: Identifiable {}
+extension MovieUI: Identifiable {}

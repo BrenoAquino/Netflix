@@ -16,7 +16,6 @@ struct HighlightersCarouselView: View {
 
     private let titleSpeedDivider: CGFloat = 2
     private let finalAngle: Angle = .degrees(45)
-    private let parallaxImageMargin: CGFloat = 16
 
     // MARK: Exhibition
 
@@ -32,7 +31,7 @@ struct HighlightersCarouselView: View {
                     let rotationAngle = -finalAngle * currentX / proxy.size.width
                     let titleOffsetX = currentX / titleSpeedDivider
 
-                    poster(movie, proxy, rotationAngle, titleOffsetX)
+                    poster(movie, proxy, titleOffsetX)
                         .rotation3DEffect(rotationAngle, axis: (x: 0, y: 1, z: 0))
                 }
             }
@@ -43,7 +42,6 @@ struct HighlightersCarouselView: View {
     @ViewBuilder private func poster(
         _ movie: MovieDetailUI,
         _ proxy: GeometryProxy,
-        _ rotationAngle: Angle = .degrees(.zero),
         _ titleOffsetX: CGFloat = .zero
     ) -> some View {
         CachedAsyncImage(url: movie.cleanPosterURL ?? movie.posterURL) { data in
@@ -59,7 +57,6 @@ struct HighlightersCarouselView: View {
                 }
         }
         .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
-        .padding(-parallaxImageMargin)
         .clipShape(RoundedRectangle(cornerRadius: RadiusDesignConstant.hard))
         .padding(.horizontal, SpaceDesignConstant.normal)
         .frame(width: proxy.size.width)
@@ -88,7 +85,7 @@ struct HighlightersCarouselView: View {
     @ViewBuilder private func title(
         _ movie: MovieDetailUI,
         _ proxy: GeometryProxy,
-        _ offsetX: CGFloat = .zero
+        _ titleOffsetX: CGFloat = .zero
     ) -> some View {
         CachedAsyncImage(url: movie.logoURL) { data in
             data.image.resizable()
@@ -98,7 +95,7 @@ struct HighlightersCarouselView: View {
         .aspectRatio(contentMode: .fit)
         .padding(.horizontal, SpaceDesignConstant.normal)
         .padding(.horizontal, SpaceDesignConstant.normal)
-        .offset(x: offsetX)
+        .offset(x: titleOffsetX)
     }
 }
 

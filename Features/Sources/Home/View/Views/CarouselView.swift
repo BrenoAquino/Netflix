@@ -10,6 +10,7 @@ import SwiftUI
 
 struct CarouselView: View {
 
+    private let parallaxImageMargin: CGFloat = 4
     private let carousel: CarouselUI
 
     init(carousel: CarouselUI) {
@@ -25,8 +26,13 @@ struct CarouselView: View {
                 .padding(.horizontal, SpaceDesignConstant.normal)
 
             ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: SpaceDesignConstant.smallM) {
-                    ForEach(carousel.movies, id: \.title, content: poster)
+                HStack(spacing: SpaceDesignConstant.smallM) {
+                    ForEach(carousel.movies) { movie in
+                        GeometryReader { proxy in
+                            poster(movie)
+                        }
+                        .aspectRatio(contentMode: .fit)
+                    }
                 }
                 .padding(.horizontal, SpaceDesignConstant.normal)
             }
@@ -37,13 +43,15 @@ struct CarouselView: View {
         CachedAsyncImage(
             url: content.posterURL,
             content: { data in
-                data.image.resizable()
+                data.image
+                    .resizable()
             },
             placeholder: {
                 placeholder(content.title)
             })
         .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
         .frame(width: DesignConstants.Carousel.posterWidth)
+        .padding(-parallaxImageMargin)
         .clipShape(RoundedRectangle(cornerRadius: RadiusDesignConstant.normal))
     }
 

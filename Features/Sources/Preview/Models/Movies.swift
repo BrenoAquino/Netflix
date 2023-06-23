@@ -17,13 +17,15 @@ private extension Domain.Movie {
 }
 
 extension Domain.Movie {
-    public static let marioBros: Movie = .init(
-        id: 1,
-        title: "Super Mario Bros.: The Film \(arc4random() % 100)",
-        poster: URL(string: "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/ij8sapIEbLf2g8npOu6XgsQS2w0.jpg")!,
-        genres: [.animation, .adventure, .family, .fantasy],
-        voteAverage: 3.4
-    )
+    public static var marioBros: Movie {
+        .init(
+            id: Int(arc4random() % 100),
+            title: "Super Mario Bros.: The Film",
+            poster: URL(string: "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/ij8sapIEbLf2g8npOu6XgsQS2w0.jpg")!,
+            genres: [.animation, .adventure, .family, .fantasy],
+            voteAverage: 3.4
+        )
+    }
 }
 
 #endif
