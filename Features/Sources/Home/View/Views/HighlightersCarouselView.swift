@@ -36,6 +36,7 @@ struct HighlightersCarouselView: View {
                         .rotation3DEffect(rotationAngle, axis: (x: 0, y: 1, z: 0))
                         .position(proxy.frame(in: .local).center)
                 }
+                .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
                 .padding(SpaceDesignConstant.normal)
             }
         }
@@ -59,7 +60,6 @@ struct HighlightersCarouselView: View {
                     titleContainer(movie, titleOffsetX)
                 }
         }
-        .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerRadius: RadiusDesignConstant.hard))
         .frame(maxWidth: .infinity)
     }
@@ -70,17 +70,15 @@ struct HighlightersCarouselView: View {
         _ averageColor: Color? = nil
     ) -> some View {
         let averageColor = averageColor ?? Color.black
-        ZStack {
-            VStack {
-                Spacer().frame(height: SpaceDesignConstant.bigL)
-                title(movie, titleOffsetX)
-                Spacer().frame(height: SpaceDesignConstant.bigL)
-            }
-        }
-        .background(
-            averageColor
-                .blur(radius: RadiusDesignConstant.blurHard)
-        )
+
+        title(movie, titleOffsetX)
+            .padding(.vertical, SpaceDesignConstant.bigL)
+            .background(
+                averageColor
+                    .blur(radius: RadiusDesignConstant.blurHard)
+            )
+            .frame(maxHeight: 300)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     @ViewBuilder private func title(
@@ -109,7 +107,7 @@ struct HighlightersCarouselView_Previews: PreviewProvider {
             .init(movie: Domain.MovieDetail.marioBros),
             .init(movie: Domain.MovieDetail.spiderMan),
         ])
-        .background(Color.purple)
+        .preferredColorScheme(.dark)
 
         HomeView(
             viewModel: HomeViewModel(

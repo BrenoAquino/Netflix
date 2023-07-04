@@ -25,28 +25,33 @@ struct CarouselView: View {
                 .padding(.horizontal, SpaceDesignConstant.normal)
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: SpaceDesignConstant.smallM) {
+                LazyHStack(spacing: SpaceDesignConstant.smallM) {
                     ForEach(carousel.movies) { movie in
                         poster(movie)
-                            .frame(width: DesignConstants.Carousel.posterWidth)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
                 .padding(.horizontal, SpaceDesignConstant.normal)
             }
         }
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     private func poster(_ content: MovieUI) -> some View {
-        CachedAsyncImage(
-            url: content.posterURL,
-            content: { data in
-                data.image
-                    .resizable()
-            },
-            placeholder: {
-                placeholder(content.title)
-            })
+        GeometryReader { proxy in
+            CachedAsyncImage(
+                url: content.posterURL,
+                content: { data in
+                    data.image
+                        .resizable()
+                },
+                placeholder: {
+                    placeholder(content.title)
+                }
+            )
+        }
         .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
+        .frame(width: DesignConstants.Carousel.posterWidth)
         .clipShape(RoundedRectangle(cornerRadius: RadiusDesignConstant.normal))
     }
 
@@ -79,6 +84,7 @@ struct CarouselView_Previews: PreviewProvider {
                 .init(movie: Domain.Movie.marioBros)
             ]
         ))
+        .preferredColorScheme(.dark)
 
         HomeView(
             viewModel: HomeViewModel(
