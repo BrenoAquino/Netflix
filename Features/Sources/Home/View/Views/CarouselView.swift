@@ -17,21 +17,21 @@ struct CarouselView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: SpaceDesignConstant.smallM) {
+        VStack(alignment: .leading, spacing: .smallM) {
             Text(carousel.title)
                 .font(.title3)
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
-                .padding(.horizontal, SpaceDesignConstant.normal)
+                .padding(.horizontal, space: .normal)
 
             ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: SpaceDesignConstant.smallM) {
+                LazyHStack(spacing: .smallM) {
                     ForEach(carousel.movies) { movie in
                         poster(movie)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 }
-                .padding(.horizontal, SpaceDesignConstant.normal)
+                .padding(.horizontal, space: .normal)
             }
         }
         .fixedSize(horizontal: false, vertical: true)
@@ -56,11 +56,11 @@ struct CarouselView: View {
     }
 
     private func placeholder(_ title: String) -> some View {
-        VStack(spacing: SpaceDesignConstant.smallL) {
+        VStack(spacing: .smallL) {
             ProgressView()
             Text(title)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, SpaceDesignConstant.smallM)
+                .padding(.horizontal, space: .smallM)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.gray)

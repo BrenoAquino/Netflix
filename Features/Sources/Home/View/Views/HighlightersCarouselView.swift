@@ -37,7 +37,7 @@ struct HighlightersCarouselView: View {
                         .position(proxy.frame(in: .local).center)
                 }
                 .aspectRatio(.portrait, contentMode: .fit)
-                .padding(SpaceDesignConstant.normal)
+                .padding(space: .normal)
             }
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
@@ -72,7 +72,7 @@ struct HighlightersCarouselView: View {
         let averageColor = averageColor ?? Color.black
 
         return title(movie, titleOffsetX)
-            .padding(.vertical, SpaceDesignConstant.bigL)
+            .padding(.vertical, space: .bigL)
             .background(
                 averageColor
                     .blur(radius: RadiusDesignConstant.blurHard)
@@ -91,8 +91,8 @@ struct HighlightersCarouselView: View {
             Text(movie.title)
         }
         .aspectRatio(contentMode: .fit)
-        .padding(.horizontal, SpaceDesignConstant.normal)
-        .padding(.horizontal, SpaceDesignConstant.normal)
+        .padding(.horizontal, space: .normal)
+        .padding(.horizontal, space: .normal)
         .offset(x: titleOffsetX)
     }
 }

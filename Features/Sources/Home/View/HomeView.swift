@@ -67,7 +67,7 @@ public struct HomeView: View {
         ForEach(viewModel.carousels, id: \.title) {
             CarouselView(carousel: $0)
                 .background(Color.blue)
-                .padding(.bottom, SpaceDesignConstant.normal)
+                .padding(.bottom, space: .normal)
         }
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
