@@ -36,15 +36,15 @@ struct HighlightersCarouselView: View {
                         .rotation3DEffect(rotationAngle, axis: (x: 0, y: 1, z: 0))
                         .position(proxy.frame(in: .local).center)
                 }
-                .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
+                .aspectRatio(.portrait, contentMode: .fit)
                 .padding(SpaceDesignConstant.normal)
             }
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
-        .aspectRatio(AspectDesignConstant.portrait, contentMode: .fit)
+        .aspectRatio(.portrait, contentMode: .fit)
     }
 
-    @ViewBuilder private func poster(
+    private func poster(
         _ movie: MovieDetailUI,
         _ titleOffsetX: CGFloat = .zero
     ) -> some View {
@@ -64,14 +64,14 @@ struct HighlightersCarouselView: View {
         .frame(maxWidth: .infinity)
     }
 
-    @ViewBuilder private func titleContainer(
+    private func titleContainer(
         _ movie: MovieDetailUI,
         _ titleOffsetX: CGFloat = .zero,
         _ averageColor: Color? = nil
     ) -> some View {
         let averageColor = averageColor ?? Color.black
 
-        title(movie, titleOffsetX)
+        return title(movie, titleOffsetX)
             .padding(.vertical, SpaceDesignConstant.bigL)
             .background(
                 averageColor
@@ -81,7 +81,7 @@ struct HighlightersCarouselView: View {
             .fixedSize(horizontal: false, vertical: true)
     }
 
-    @ViewBuilder private func title(
+    private func title(
         _ movie: MovieDetailUI,
         _ titleOffsetX: CGFloat = .zero
     ) -> some View {

@@ -21,9 +21,11 @@ public struct DetailView: View {
             .task(viewModel.fetchMovie)
     }
 
+    // MARK: State View
+
     private var stateView: some View {
         guard let movie = viewModel.movie else {
-            return AnyView(Text("Error"))
+            return AnyView(error)
         }
         switch viewModel.state {
         case .content:
@@ -31,12 +33,20 @@ public struct DetailView: View {
         case .loading:
             return AnyView(LoadingView())
         case .error:
-            return AnyView(Text("Error"))
+            return AnyView(error)
         }
     }
 
+    // MARK: Each State
+
     private func content(_ movie: MovieDetailUI) -> some View {
-        Text(movie.title)
+        ScrollView {
+            PosterView(movie: movie)
+        }
+    }
+
+    private var error: some View {
+        Text("error")
     }
 }
 
