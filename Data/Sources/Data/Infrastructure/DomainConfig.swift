@@ -11,12 +11,18 @@ public protocol DomainConfig {
     /// Base URL
     var baseURL: String { get }
     /// Required query parameters to add in all requests
-    var additionalQueryParams: [String : String] { get }
+    var standardsQueryParams: [String : Any] { get }
     /// Required headers to add in all requests
-    var additionalHeaders: [String : String] { get }
+    var standardsHeaders: [String : String] { get }
+}
+
+public protocol ImageDomainConfig {
+    /// Image pre processing
+    func preProcessing(_ imagePath: String?) -> String?
 }
 
 public extension DomainConfig {
-    var additionalQueryParams: [String : String] { [:] }
-    var additionalHeaders: [String : String] { [:] }
+    var standardsQueryParams: [String : Any] { [:] }
+    var standardsHeaders: [String : String] { [:] }
+    func preImageProcessing(_ imagePath: String) -> String { imagePath }
 }

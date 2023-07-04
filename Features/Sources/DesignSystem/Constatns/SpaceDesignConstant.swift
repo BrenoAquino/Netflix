@@ -1,5 +1,5 @@
 //
-//  HDesignConstant.swift
+//  SpaceDesignConstant.swift
 //  
 //
 //  Created by Breno Aquino on 16/06/23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum HDesignConstant {
+public enum SpaceDesignConstant {
 
     /// Big Large - 40
     public static let bigL: CGFloat = 40

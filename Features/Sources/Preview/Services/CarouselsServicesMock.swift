@@ -12,8 +12,8 @@ import Foundation
 public class CarouselsServicesMock: Domain.CarouselsService {
     public init() {}
 
-    public func topRatedMovie() async throws -> Movie {
-        .marioBros
+    public func highlighted() async throws -> [MovieDetail] {
+        [.marioBros, .marioBros]
     }
 
     public func topRated() async throws -> [Domain.Movie] {

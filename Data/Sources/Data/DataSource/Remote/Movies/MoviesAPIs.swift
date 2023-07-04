@@ -14,4 +14,10 @@ enum MoviesAPIs {
     case topRated(_ config: DomainConfig, page: Int)
     /// Configuration related to the popular API
     case popular(_ config: DomainConfig, page: Int)
+    /// Configuration related to the images API
+    case images(_ config: DomainConfig, movieID: Int)
+    /// Configuration related to the clean images API
+    case cleanImages(_ config: DomainConfig, movieID: Int)
+    /// Configuration related to the detail API
+    case detail(_ config: DomainConfig, movieID: Int)
 }

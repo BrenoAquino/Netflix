@@ -12,8 +12,11 @@ import Foundation
 class RepositoryFactory {
     private init() {}
 
+    private static let imageDomain = TMDBImageDomainConfig()
+
     static func movies() -> Domain.MoviesRepository {
         MoviesRepositoryImpl(
+            imageDomain: imageDomain,
             moviesRemoteDataSource: RemoteDataSourceFactory.movies()
         )
     }

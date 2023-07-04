@@ -21,7 +21,7 @@ let package = Package(
     targets: [
         .target(
             name: "DesignSystem",
-            dependencies: []),
+            dependencies: ["Common"]),
         .target(
             name: "Preview",
             dependencies: ["Common", "Domain"]),

@@ -14,4 +14,10 @@ public protocol MoviesRemoteDataSource {
     func topRated(page: Int) async throws -> Pagination<[Movie]>
     /// Retrieve the popular movies
     func popular(page: Int) async throws -> Pagination<[Movie]>
+    /// Retrieve all images related to a specific movie
+    func images(movieID: Int) async throws -> Images
+    /// Retrieve all clean images related to a specific movie
+    func cleanImages(movieID: Int) async throws -> Images
+    /// Retrieve all metadata related to a specific movie
+    func detail(movieID: Int) async throws -> MovieDetail
 }

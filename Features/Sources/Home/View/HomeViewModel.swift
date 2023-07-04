@@ -24,7 +24,7 @@ public class HomeViewModel: ObservableObject {
     // MARK: Publishers
 
     @Published var state: HomeState = .loading
-    @Published var mainContent: ContentUI? = nil
+    @Published var highlighters: [MovieDetailUI] = []
     @Published var carousels: [CarouselUI] = []
 
     // MARK: Inits
@@ -38,28 +38,26 @@ public class HomeViewModel: ObservableObject {
 
 extension HomeViewModel {
 
-    func fetchData() {
-        Task { [self] in
-            do {
-                let topRatedMovie = ContentUI(movie: try await carouselsService.topRatedMovie())
-                async let carouselTopRated = try? carouselsService.topRated().map { ContentUI(movie: $0) }
-                async let carouselUpcoming = try? carouselsService.upcoming().map { ContentUI(movie: $0) }
-                async let carouselPopular = try? carouselsService.popular().map { ContentUI(movie: $0) }
+    func fetchData() async {
+        do {
+            let carouselHighlighters = try await carouselsService.highlighted().compactMap { MovieDetailUI(movie: $0) }
+            async let carouselTopRated = try carouselsService.topRated().compactMap { MovieUI(movie: $0) }
+            async let carouselUpcoming = try carouselsService.upcoming().compactMap { MovieUI(movie: $0) }
+            async let carouselPopular = try carouselsService.popular().compactMap { MovieUI(movie: $0) }
 
-                let homeCarousels = await [
-                    ("Top Rated", carouselTopRated),
-                    ("Upcoming", carouselUpcoming),
-                    ("Popular", carouselPopular),
-                ].compactMap { CarouselUI(title: $0.0, contents: $0.1) }
+            let homeCarousels = try await [
+                ("Top Rated", carouselTopRated),
+                ("Upcoming", carouselUpcoming),
+                ("Popular", carouselPopular),
+            ].compactMap { CarouselUI(title: $0.0, movies: $0.1) }
 
-                await MainActor.run { [self] in
-                    mainContent = topRatedMovie
-                    carousels = homeCarousels
-                    state = .content
-                }
-            } catch {
-                Logger.log(error.localizedDescription)
+            await MainActor.run { [self] in
+                highlighters = carouselHighlighters
+                carousels = homeCarousels
+                state = .content
             }
+        } catch {
+            Logger.log(level: .error, "\(String(describing: error)) | \(error.localizedDescription)")
         }
     }
 }
@@ -67,8 +65,8 @@ extension HomeViewModel {
 // MARK: - Utils Extensions
 
 private extension CarouselUI {
-    convenience init?(title: String, contents: [ContentUI]?) {
-        guard let contents else { return nil }
-        self.init(title: title, contents: contents)
+    convenience init?(title: String, movies: [MovieUI]?) {
+        guard let movies else { return nil }
+        self.init(title: title, movies: movies)
     }
 }

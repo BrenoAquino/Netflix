@@ -5,6 +5,7 @@
 //  Created by Breno Aquino on 22/03/23.
 //
 
+import Common
 import DesignSystem
 import SwiftUI
 
@@ -17,10 +18,10 @@ public struct HomeView: View {
     }
 
     public var body: some View {
-        stateView
+        content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(background)
-            .onAppear(perform: viewModel.fetchData)
+            .task { await viewModel.fetchData() }
     }
 
     private var background: some View {
@@ -47,26 +48,30 @@ public struct HomeView: View {
     // MARK: Content
 
     private var content: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            contentHeader
-            carouselsList
+        List {
+            highlighters
+            carousels
         }
+        .listStyle(.plain)
+        .listBackgroundColor(Color.clear)
     }
 
-    @ViewBuilder private var contentHeader: some View {
-        if let mainContent = viewModel.mainContent {
-            PosterView(content: mainContent)
-                .shadow(radius: RadiusDesignConstant.hard)
-        }
+    private var highlighters: some View {
+        HighlightersCarouselView(movies: viewModel.highlighters)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.purple)
     }
 
-    private var carouselsList: some View {
-        VStack(alignment: .leading, spacing: VDesignConstant.normal) {
-            ForEach(viewModel.carousels, id: \.title) { carousel in
-                CarouselView(carousel: carousel)
-            }
+    private var carousels: some View {
+        ForEach(viewModel.carousels, id: \.title) {
+            CarouselView(carousel: $0)
+                .background(Color.blue)
+                .padding(.bottom, SpaceDesignConstant.normal)
         }
-        .padding(.top, VDesignConstant.normal)
+        .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets())
+        .listRowBackground(Color.clear)
     }
 }
 
@@ -74,8 +79,13 @@ public struct HomeView: View {
 import Preview
 
 struct HomeView_Previews: PreviewProvider {
+
     static var previews: some View {
-        HomeView(
+        UITableView.appearance().separatorStyle = .none
+        UITableViewCell.appearance().backgroundColor = .clear
+        UITableView.appearance().backgroundColor = .clear
+
+        return HomeView(
             viewModel: HomeViewModel(
                 carouselsService: Preview.CarouselsServicesMock()
             )
