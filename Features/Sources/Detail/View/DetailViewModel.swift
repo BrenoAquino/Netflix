@@ -45,7 +45,10 @@ public class DetailViewModel: ObservableObject {
 extension DetailViewModel {
 
     @Sendable func fetchMovie() async {
-        guard movie == nil else { return }
+        guard movie == nil else {
+            state = .error
+            return
+        }
 
         do {
             let content = try await movieService.allContent(movieID: movieID)

@@ -25,6 +25,8 @@
 		5579FE1B29CB30E900C55970 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5579FE1A29CB30E900C55970 /* Assets.xcassets */; };
 		5579FE1F29CB30E900C55970 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5579FE1E29CB30E900C55970 /* Preview Assets.xcassets */; };
 		559E6FAB2A3CE48A000690E0 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559E6FAA2A3CE48A000690E0 /* Logger.swift */; };
+		55F98FA32A549014006A1630 /* DetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F98FA22A549014006A1630 /* DetailCoordinator.swift */; };
+		55F98FA52A54901D006A1630 /* DetailCoordinatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F98FA42A54901D006A1630 /* DetailCoordinatorViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,8 @@
 		5599385329CBA46200C3F3CD /* Domain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Domain; sourceTree = "<group>"; };
 		559E6FAA2A3CE48A000690E0 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		55B1FFCC29CBC5CB0080A9E6 /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Common; sourceTree = "<group>"; };
+		55F98FA22A549014006A1630 /* DetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCoordinator.swift; sourceTree = "<group>"; };
+		55F98FA42A54901D006A1630 /* DetailCoordinatorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCoordinatorViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,7 @@
 		555966A129CBB7C6007D4994 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				55F98FA12A54900C006A1630 /* Detail */,
 				555966A229CBB7D0007D4994 /* Home */,
 			);
 			path = Coordinators;
@@ -162,6 +167,15 @@
 				559E6FAA2A3CE48A000690E0 /* Logger.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		55F98FA12A54900C006A1630 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				55F98FA22A549014006A1630 /* DetailCoordinator.swift */,
+				55F98FA42A54901D006A1630 /* DetailCoordinatorViewModel.swift */,
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,8 +258,10 @@
 				555966A429CBB7D8007D4994 /* HomeCoordinator.swift in Sources */,
 				555966AA29CBB93A007D4994 /* CoordinatorFactory.swift in Sources */,
 				5579FE1929CB30E800C55970 /* ContentView.swift in Sources */,
+				55F98FA52A54901D006A1630 /* DetailCoordinatorViewModel.swift in Sources */,
 				555966A629CBB7DE007D4994 /* HomeCoordinatorViewModel.swift in Sources */,
 				5559669129CBB560007D4994 /* RemoteDataSourceFactory.swift in Sources */,
+				55F98FA32A549014006A1630 /* DetailCoordinator.swift in Sources */,
 				5559668C29CBB4C2007D4994 /* ServiceFactory.swift in Sources */,
 				555966A829CBB8D9007D4994 /* ViewModelFactory.swift in Sources */,
 				559E6FAB2A3CE48A000690E0 /* Logger.swift in Sources */,

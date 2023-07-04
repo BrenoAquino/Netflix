@@ -75,7 +75,7 @@ struct HighlightersCarouselView: View {
             .padding(.vertical, space: .bigL)
             .background(
                 averageColor
-                    .blur(radius: RadiusDesignConstant.blurHard)
+                    .blur(radius: .hard)
             )
             .frame(maxHeight: 300)
             .fixedSize(horizontal: false, vertical: true)

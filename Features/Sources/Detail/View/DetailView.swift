@@ -24,12 +24,13 @@ public struct DetailView: View {
     // MARK: State View
 
     private var stateView: some View {
-        guard let movie = viewModel.movie else {
-            return AnyView(error)
-        }
         switch viewModel.state {
         case .content:
-            return AnyView(content(movie))
+            if let movie = viewModel.movie {
+                return AnyView(content(movie))
+            } else {
+                return AnyView(error)
+            }
         case .loading:
             return AnyView(LoadingView())
         case .error:
@@ -60,6 +61,7 @@ struct DetailView_Preview: PreviewProvider {
             movieService: Preview.MovieServicesMock(),
             movieID: 123
         ))
+        .preferredColorScheme(.dark)
     }
 }
 #endif

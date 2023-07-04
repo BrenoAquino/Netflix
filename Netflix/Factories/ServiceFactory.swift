@@ -17,4 +17,10 @@ class ServiceFactory {
             genresRepository: RepositoryFactory.genres()
         )
     }
+
+    static func movie() -> Domain.MovieService {
+        Domain.MovieServiceImpl(
+            moviesRepository: RepositoryFactory.movies()
+        )
+    }
 }

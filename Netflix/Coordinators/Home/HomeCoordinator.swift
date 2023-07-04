@@ -10,15 +10,25 @@ import Home
 
 struct HomeCoordinator: View {
 
-    // MARK: Coordinator
+    // MARK: Variables
+
     @ObservedObject var viewModel: HomeCoordinatorViewModel
+
+    // MARK: Inits
 
     init(viewModel: HomeCoordinatorViewModel) {
         self.viewModel = viewModel
     }
 
     // MARK: Self View
+
     var body: some View {
         Home.HomeView(viewModel: viewModel.homeViewModel)
     }
+}
+
+// MARK: Destinations
+
+extension HomeCoordinator {
+
 }

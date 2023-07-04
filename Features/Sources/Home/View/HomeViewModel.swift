@@ -27,6 +27,10 @@ public class HomeViewModel: ObservableObject {
     @Published var highlighters: [MovieDetailUI] = []
     @Published var carousels: [CarouselUI] = []
 
+    // MARK: External Actions
+
+    public var didSelectMovie: ((_ movieID: Int) -> Void)? = nil
+
     // MARK: Inits
 
     public init(carouselsService: Domain.CarouselsService) {

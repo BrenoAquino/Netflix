@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MovieServiceImpl {
+public class MovieServiceImpl {
 
     // MARK: Variables
 
@@ -15,7 +15,7 @@ class MovieServiceImpl {
 
     // MARK: Inits
 
-    init(moviesRepository: MoviesRepository) {
+    public init(moviesRepository: MoviesRepository) {
         self.moviesRepository = moviesRepository
     }
 }
@@ -23,19 +23,19 @@ class MovieServiceImpl {
 // MARK: - MovieService
 
 extension MovieServiceImpl: MovieService {
-    func cleanImages(movieID: Int) async throws -> Images {
+    public func cleanImages(movieID: Int) async throws -> Images {
         try await moviesRepository.cleanImages(movieID: movieID)
     }
 
-    func images(movieID: Int) async throws -> Images {
+    public func images(movieID: Int) async throws -> Images {
         try await moviesRepository.images(movieID: movieID)
     }
 
-    func detail(movieID: Int) async throws -> MovieDetail {
+    public func detail(movieID: Int) async throws -> MovieDetail {
         try await moviesRepository.detail(movieID: movieID)
     }
 
-    func allContent(movieID: Int) async throws -> MovieDetail {
+    public func allContent(movieID: Int) async throws -> MovieDetail {
         async let detailRetriever = detail(movieID: movieID)
         async let imagesRetriever = images(movieID: movieID)
         async let cleanImagesRetriever = cleanImages(movieID: movieID)

@@ -20,8 +20,7 @@ struct PosterView: View {
         CachedAsyncImage(
             url: movie.posterURL,
             content: { data in
-                data.image
-                    .resizable()
+                data.image.resizable()
             },
             placeholder: {
                 Text(movie.title)
@@ -41,6 +40,7 @@ struct PosterView_Preview: PreviewProvider {
         PosterView(movie: .init(
             movie: Domain.MovieDetail.spiderMan
         ))
+        .preferredColorScheme(.dark)
     }
 }
 #endif
