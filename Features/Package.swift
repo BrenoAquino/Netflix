@@ -11,6 +11,9 @@ let package = Package(
             name: "Home",
             targets: ["Home"]),
         .library(
+            name: "Detail",
+            targets: ["Detail"]),
+        .library(
             name: "DesignSystem",
             targets: ["DesignSystem"]),
     ],
@@ -27,6 +30,9 @@ let package = Package(
             dependencies: ["Common", "Domain"]),
         .target(
             name: "Home",
+            dependencies: ["Common", "DesignSystem", "Preview", "Domain"]),
+        .target(
+            name: "Detail",
             dependencies: ["Common", "DesignSystem", "Preview", "Domain"]),
         .testTarget(
             name: "FeaturesTests",

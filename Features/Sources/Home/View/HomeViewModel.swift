@@ -58,6 +58,9 @@ extension HomeViewModel {
             }
         } catch {
             Logger.log(level: .error, "\(String(describing: error)) | \(error.localizedDescription)")
+            await MainActor.run { [self] in
+                state = .error
+            }
         }
     }
 }
